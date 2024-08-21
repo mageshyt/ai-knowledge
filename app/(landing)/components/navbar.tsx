@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 
@@ -7,15 +8,17 @@ export const Navbar = () => {
       <div className="text-white font-light">Magic UI</div>
 
       <div className="flex gap-4 items-center">
-        <Link className="text-white" href={"/"}>
-          Login
+        <Link href={"/"}>
+          <Button
+            variant={"ghost"}
+            className="hover:bg-opacity-15 hover:bg-white"
+          >
+            Login
+          </Button>
         </Link>
 
-        <Link
-          className="text-white bg-neutral-800 px-4 p-2 rounded-md"
-          href={"/"}
-        >
-          sign up
+        <Link href={"/"}>
+          <Button>sign up</Button>
         </Link>
       </div>
     </nav>
