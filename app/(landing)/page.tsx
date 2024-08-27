@@ -1,5 +1,3 @@
-import BlurIn from "@/components/magicui/blur-in";
-import Image from "next/image";
 import Particles from "@/components/magicui/particles";
 
 export default function Home() {
@@ -12,7 +10,6 @@ export default function Home() {
         refresh
       />
 
-      <h1 className="text-7xl">testing this site and initalize</h1>
-    </div>
+   </div>
   );
 }
