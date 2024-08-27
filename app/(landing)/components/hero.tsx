@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ArrowRight, ChevronRight } from "lucide-react";
 export const Hero = () => {
   return (
-    <section className="mt-10 text-center space-y-4">
+    <section className="mt-10 text-center space-y-4 ">
       <AnimatedGradientText>
         🎉 <hr className="mx-2 h-4 w-[1px] shrink-0 bg-gray-300" />{" "}
         <span
@@ -17,7 +17,7 @@ export const Hero = () => {
         <ChevronRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
       </AnimatedGradientText>
 
-      <h1 className="xl:text-8xl lg:text-7xl md:text-6xl text-4xl bg-gradient-to-br text-transparent bg-clip-text from-white to-neutral-800">
+      <h1 className=" lg:text-7xl md:text-6xl text-4xl bg-gradient-to-br text-transparent bg-clip-text from-white via-gray-100 to-neutral-800">
         Magic UI is the new way
         <br />
         to build landing pages

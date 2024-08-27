@@ -18,7 +18,7 @@ export const Navbar = () => {
         </Link>
 
         <Link href={"/"}>
-          <Button>sign up</Button>
+          <Button size="sm">sign up</Button>
         </Link>
       </div>
     </nav>
