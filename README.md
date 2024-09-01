@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Data Base Schema
+
+![Data Base Schema](/assets/Knowlede%20Verse_2024-09-01T16_52_55.558Z.png)
+
 ## Getting Started
 
 First, run the development server:
