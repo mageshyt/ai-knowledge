@@ -9,7 +9,7 @@ export default function SignUpPage() {
       {/* sign-in */}
       <div className="h-full lg:flex flex-col items-center justify-center px-4 col-span-2">
         <div className="text-center space-y-4 pt-16">
-          <h1 className="font-bold text-3xl text-muted-[#2E2A47] dark:text-white">
+          <h1 className="font-bold text-3xl text-muted ">
             Welcome to Learn Quest 📔
           </h1>
           <p className="text-base text-[#7E8CA0]">

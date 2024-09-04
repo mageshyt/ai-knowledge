@@ -10,7 +10,7 @@ export default function SignInPage() {
       {/* sign-in */}
       <div className="col-span-2 h-full flex-col items-center justify-center px-4 lg:flex">
         <div className="space-y-4 pt-16 text-center">
-          <h1 className="text-muted-[#2E2A47] text-3xl font-bold dark:text-white">
+          <h1 className="text-muted text-3xl font-bold">
             Welcome to Knowledge Verse
           </h1>
           <p className="text-base  text-[#7E8CA0]">
@@ -20,7 +20,7 @@ export default function SignInPage() {
         {/* card */}
         <div className="col-start-2 mt-8 flex items-center justify-center">
           <ClerkLoaded>
-            <SignIn path="/sign-in" forceRedirectUrl={"/dashboard"} />
+            <SignIn path="/sign-in" forceRedirectUrl={"/chats"} />
           </ClerkLoaded>
           <ClerkLoading>
             <Loader2 className="animate-spin text-muted-foreground" />
