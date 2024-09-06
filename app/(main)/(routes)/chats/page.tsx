@@ -1,14 +1,19 @@
 
 import tw from 'tailwind-styled-components';
 
-import {  Mic, SendHorizonal } from 'lucide-react';
+import { Mic, SendHorizonal } from 'lucide-react';
 import { Logo } from '@/components/global/Logo';
+import { CreateConversationCard } from './components/create-conversation-card';
 
 
-  const ChatsPage = () => {
+const ChatsPage = () => {
   return <Container>
-      <Logo type='full' size='lg' />
+    <Logo type='full' size='lg' />
     {/* TODO : Info Banner */}
+
+    <div className='mt-10'>
+      <CreateConversationCard />
+    </div>
 
 
 
@@ -20,9 +25,9 @@ import { Logo } from '@/components/global/Logo';
         placeholder='Search for a chat'
       />
       <SendHorizonal className='size-4 mr-1 text-muted-foreground' />
-      </SearchBar>
-    
-    </Container>;
+    </SearchBar>
+
+  </Container>;
 };
 
 export default ChatsPage;
