@@ -17,7 +17,7 @@ export const Navbar = () => {
       </div>
 
       <div className="flex gap-4 items-center">
-        <Link href={"/"}>
+        <Link href={"/sign-in"}>
           <Button
             variant={"ghost"}
             className="hover:bg-opacity-15 hover:bg-white"
@@ -26,7 +26,7 @@ export const Navbar = () => {
           </Button>
         </Link>
 
-        <Link href={"/"}>
+        <Link href={"/sign-up"}>
           <Button size="sm">sign up</Button>
         </Link>
       </div>
