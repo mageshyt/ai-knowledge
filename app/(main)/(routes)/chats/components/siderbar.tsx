@@ -11,7 +11,7 @@ const Sidebar = () => {
   return (
     <Wrapper>
       <div className="w-full p-4">
-        <Button className="w-full dark:bg-purple-300/80 rounded-xl">
+        <Button className="w-full bg-primary rounded-xl">
           <Plus className="size-6 mr-2" />
           New Chat
         </Button>
