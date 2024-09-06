@@ -1,9 +1,7 @@
 import tw from "tailwind-styled-components";
 import React from "react";
 
-// import SidebarRoutes from "./sidebar-routes";
-import Link from "next/link";
-import { Plus, Settings } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarSettings } from "./sidebar-settings";
 

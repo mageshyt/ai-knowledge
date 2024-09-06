@@ -1,5 +1,5 @@
 import tw from "tailwind-styled-components";
-import { Archive, LogOut, Moon, Sun, User } from "lucide-react";
+import { Archive, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { ThemeToggle } from "@/components/global/theme-toogle";
