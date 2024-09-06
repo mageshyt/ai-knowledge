@@ -11,15 +11,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ClientWrapper from "./client-wrapper";
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
+  console.log(theme);
 
   return (
+    <ClientWrapper>
+
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          className="w-full  items-center justify-start p-2 hover:bg-gray-100/20 rounded-md font-light text-sm text-muted-foreground"
+      
+        <button
+          className="w-full flex  items-center justify-start p-2 hover:bg-gray-100/20 rounded-md font-light text-sm text-muted-foreground outline-none"
           variant="ghost"
         >
           {theme == "dark" ? (
@@ -28,7 +33,7 @@ export function ThemeToggle() {
             <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 mr-2" />
           )}
           <span className="">Toggle theme</span>
-        </Button>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-64">
         <DropdownMenuItem onClick={() => setTheme("light")}>
@@ -42,5 +47,6 @@ export function ThemeToggle() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+      </ClientWrapper>
   );
 }
