@@ -1,0 +1,12 @@
+services:
+  db:
+    container_name: knowledge_db
+    image: postgres:13.5
+    env_file: "db.env"
+    ports:
+      - 5432:5432
+    volumes:
+      - knowledge_data:/var/lib/postgresql/data
+
+volumes:
+  knowledge_data: {}
