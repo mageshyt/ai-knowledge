@@ -14,6 +14,7 @@ import {
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { updateSession } from '@/actions/chat-session/update-session';
+import { useModal } from '@/hooks/use-modal';
 
 interface SidebarItemProps {
   id: string;
@@ -27,8 +28,8 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
   const [updating, setUpdating] = useState<boolean>(false)
 
 
-
   //------------------Handlers-------------------
+  const { openModal } = useModal()
 
   // TODO: Add the ability to edit and delete chat session
   const handleEdit = async () => {
@@ -39,7 +40,7 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
       const response = await updateSession({ sessionId: id, value: { name: editName } })
 
       if (response && "error" in response) {
-      // Revert the name back to the original name
+        // Revert the name back to the original name
         toast.error(response.error)
         setEditName(name)
         return;
@@ -67,9 +68,15 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
     toast.error('Share feature is not available yet')
   }
 
+
   const handleDelete = () => {
     toast.error('Delete feature is not available yet')
   }
+
+  const handleArchive = () => {
+    toast.error('Archive feature is not available yet')
+  }
+
 
   return (
     <div
@@ -83,9 +90,9 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
             disabled={updating}
             onKeyPress={(e) => {
               console.log(e.key) // Handle Enter and Escape key
-              if (e.key === 'Enter') 
+              if (e.key === 'Enter')
                 handleEdit()
-              }
+            }
             }
 
             type='text'
@@ -140,15 +147,16 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
           {/* ----------------Button to delete-------------- */}
 
           <DropdownMenuItem
-            onClick={handleDelete}
+            onClick={() => openModal('confirm-modal', { sessionId: id, sessionName: editName, handleConfirm: handleArchive,actionType:'archive' })}
           >
             <Archive className="size-4 mr-2" />
             Archive
           </DropdownMenuItem>
 
           <DropdownMenuItem
+
             className='text-red-500'
-            onClick={handleDelete}
+            onClick={() => openModal('confirm-modal', { sessionId: id, sessionName: editName, handleConfirm: handleDelete,actionType:'delete' })}
           >
             <Trash className="size-4 mr-2" />
             Delete

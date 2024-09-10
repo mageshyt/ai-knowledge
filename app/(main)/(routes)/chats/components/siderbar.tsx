@@ -5,15 +5,21 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarSettings } from "./sidebar-settings";
 import { SideBarRoutes } from "./sidebar-routes";
+import Link from "next/link";
 
 const Sidebar = () => {
   return (
     <Wrapper>
       <div className="w-full p-4">
-        <Button className="w-full bg-primary rounded-xl">
-          <Plus className="size-6 mr-2" />
-          New Chat
-        </Button>
+        <Link
+          href={`/chats`}
+        >
+          <Button className="w-full bg-primary rounded-xl">
+
+            <Plus className="size-6 mr-2" />
+            New Chat
+          </Button>
+        </Link>
       </div>
 
       <Routes>
