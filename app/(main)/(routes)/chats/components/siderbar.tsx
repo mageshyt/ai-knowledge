@@ -4,6 +4,7 @@ import React from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarSettings } from "./sidebar-settings";
+import { SideBarRoutes } from "./side-bar-routes";
 
 const Sidebar = () => {
   return (
@@ -15,7 +16,10 @@ const Sidebar = () => {
         </Button>
       </div>
 
-      <Routes>{/* <SidebarRoutes /> */}</Routes>
+      <Routes>
+        {/* <SidebarRoutes /> */}
+        <SideBarRoutes />
+      </Routes>
 
       {/* setting */}
       <SettingWrapper>
@@ -29,6 +33,6 @@ export default Sidebar;
 
 const Wrapper = tw.div`h-full  border-r flex flex-col  overflow-y-auto  shadow-sm justify-between  relative`;
 
-const Routes = tw.div`flex flex-col w-full`;
+const Routes = tw.div`flex flex-col w-full justify-start h-full`;
 
 const SettingWrapper = tw.div` border-t w-full `;

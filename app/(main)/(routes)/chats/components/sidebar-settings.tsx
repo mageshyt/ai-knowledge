@@ -3,6 +3,7 @@ import { Archive, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { ThemeToggle } from "@/components/global/theme-toogle";
+import { SignOutButton } from "@clerk/nextjs";
 
 export const SidebarSettings = () => {
   return (
@@ -20,10 +21,12 @@ export const SidebarSettings = () => {
         Archives
       </SettingButton>
 
+      <SignOutButton >
       <SettingButton href="">
         <LogOut className="size-4 mr-2 transition duration-700 " />
         Logout
       </SettingButton>
+      </SignOutButton>
     </div>
   );
 };
