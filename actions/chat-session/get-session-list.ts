@@ -12,7 +12,8 @@ export const getSessionList = async () => {
 
     const chats = await db.chatSession.findMany({
       where: {
-        userId
+        userId,
+        archived: false
       },
     })
 
