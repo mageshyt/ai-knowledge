@@ -4,7 +4,7 @@ import React from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarSettings } from "./sidebar-settings";
-import { SideBarRoutes } from "./side-bar-routes";
+import { SideBarRoutes } from "./sidebar-routes";
 
 const Sidebar = () => {
   return (
