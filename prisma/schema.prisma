@@ -23,8 +23,9 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
-  password  String
+  password  String?
   roles      ROLE[]     @default([USER])
+  attributes Json?
 
   chats    ChatSession[]
   messages Message[]
@@ -35,7 +36,10 @@ model User {
 
 model ChatSession {
   id        String   @id @default(cuid())
+  name      String   @default("New Chat")
   archived  Boolean @default(false)
+  content   Content[]
+  
 
   user      User     @relation(fields: [userId], references: [id])
   userId    String
@@ -43,6 +47,26 @@ model ChatSession {
   messages  Message[]
 
   archivedChats ArchivedChats[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ContentType {
+  TEXT
+  WEB
+  PDF
+}
+
+model Content{
+  id        String   @id @default(cuid())
+  contentUrl   String
+  contentType  ContentType @default(WEB)
+
+  chatId    String
+  chatSession ChatSession @relation(fields: [chatId], references: [id])
+
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
