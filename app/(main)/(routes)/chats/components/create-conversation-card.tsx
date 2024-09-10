@@ -1,8 +1,10 @@
-
 "use client";
 
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { createSession } from '@/actions/chat-session/create-session';
 
 import { ArrowRight, Clipboard,  Lock  } from 'lucide-react';
 
@@ -19,15 +21,32 @@ import { Button } from '@/components/ui/button';
 export const CreateConversationCard = () => {
 
   const [url, setUrl] = useState('');
+  const router=useRouter();
 
 
 
   // ---------------------------------- Handlers--------------------------------------
 
   // TOOD : backend call to create the Conversation
-  const createConversation = () => {
-    toast.info('TODO: Backend call to create a conversation');
-    console.log('Creating a conversation');
+  const createConversation =async () => {
+    try{
+
+      const response=await createSession({contentUrl:url});
+
+      if (response){
+        toast.success('Conversation created successfully');
+        // TODO: redirect to the conversation page
+        router.push(`/chats/${response.id}`);
+        setUrl('');
+      }
+
+
+
+    }
+    catch(e){
+      console.error('Error while creating conversation ', e);
+      toast.error('Error while creating conversation');
+    }
   }
 
   const handlePaste = () => {
