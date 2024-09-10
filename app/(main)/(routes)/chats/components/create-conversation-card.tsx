@@ -6,11 +6,12 @@ import { useRouter } from 'next/navigation';
 
 import { createSession } from '@/actions/chat-session/create-session';
 
-import { ArrowRight, Clipboard,  Lock  } from 'lucide-react';
+import { ArrowRight, Clipboard, Lock } from 'lucide-react';
 
-import { Card,
+import {
+  Card,
   CardHeader,
-  CardContent, 
+  CardContent,
   CardFooter,
   CardTitle,
   CardDescription
@@ -21,21 +22,19 @@ import { Button } from '@/components/ui/button';
 export const CreateConversationCard = () => {
 
   const [url, setUrl] = useState('');
-  const router=useRouter();
+  const router = useRouter();
 
 
 
   // ---------------------------------- Handlers--------------------------------------
 
-  // TOOD : backend call to create the Conversation
-  const createConversation =async () => {
-    try{
+  const createConversation = async () => {
+    try {
 
-      const response=await createSession({contentUrl:url});
+      const response = await createSession({ contentUrl: url });
 
-      if (response){
+      if (response) {
         toast.success('Conversation created successfully');
-        // TODO: redirect to the conversation page
         router.push(`/chats/${response.id}`);
         setUrl('');
       }
@@ -43,17 +42,17 @@ export const CreateConversationCard = () => {
 
 
     }
-    catch(e){
+    catch (e) {
       console.error('Error while creating conversation ', e);
       toast.error('Error while creating conversation');
     }
   }
 
   const handlePaste = () => {
-    try{
+    try {
       navigator.clipboard.readText().then((text) => {
         // check if the text is a valid URL
-        if (!text.match(/(http|https):\/\/[^ "]+$/)){
+        if (!text.match(/(http|https):\/\/[^ "]+$/)) {
           toast.error('Invalid URL');
           return;
         }
@@ -61,7 +60,7 @@ export const CreateConversationCard = () => {
         setUrl(text);
       });
     }
-    catch(e){
+    catch (e) {
       console.error('Error while pasting URL ', e);
       toast.error('Error while pasting URL');
     }
@@ -69,39 +68,39 @@ export const CreateConversationCard = () => {
 
 
   return (
-      <Card>
-        <CardHeader>
-          <CardTitle className='flex gap-2'>
-            <Lock
-              className=' size-6'
-            />
-            Enter URL for Content Exploration</CardTitle>
-          <CardDescription>
-            Provide a link to any web page, and our system will help you interact with its content.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className='relative'>
-          <Input
-            type="text"
-            placeholder="Enter URL here"
-            className="pr-8"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
+    <Card>
+      <CardHeader>
+        <CardTitle className='flex gap-2'>
+          <Lock
+            className=' size-6'
           />
-          <Clipboard
+          Enter URL for Content Exploration</CardTitle>
+        <CardDescription>
+          Provide a link to any web page, and our system will help you interact with its content.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className='relative'>
+        <Input
+          type="text"
+          placeholder="Enter URL here"
+          className="pr-8"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
+        <Clipboard
           onClick={handlePaste}
           className='absolute right-8 cursor-pointer top-[10px] text-muted-foreground size-5' />
 
-        </CardContent>
-        <CardFooter>
-          <Button
+      </CardContent>
+      <CardFooter>
+        <Button
           onClick={createConversation}
           className='w-full' >
-            Start Conversation
-            <ArrowRight className='size-4 ml-2' />
-          </Button>
-        </CardFooter>
-      </Card>
+          Start Conversation
+          <ArrowRight className='size-4 ml-2' />
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }
 
