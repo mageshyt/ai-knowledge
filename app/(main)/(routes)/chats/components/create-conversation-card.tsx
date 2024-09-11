@@ -35,12 +35,10 @@ export const CreateConversationCard = () => {
 
       if (response) {
         toast.success('Conversation created successfully');
+        //router.refresh()
         router.push(`/chats/${response.id}`);
         setUrl('');
       }
-
-
-
     }
     catch (e) {
       console.error('Error while creating conversation ', e);
