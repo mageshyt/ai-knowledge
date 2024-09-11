@@ -32,6 +32,9 @@ model User {
   sessionUser SessionUser[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([id])
+  @@index([email])
 }
 
 model ChatSession {
@@ -50,6 +53,7 @@ model ChatSession {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
 }
 
 enum ContentType {
@@ -64,9 +68,7 @@ model Content{
   contentType  ContentType @default(WEB)
 
   chatId    String
-  chatSession ChatSession @relation(fields: [chatId], references: [id])
-
-
+  chatSession ChatSession @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -76,10 +78,10 @@ model Message {
   id        String   @id @default(cuid())
   content String
 
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
 
-  chat      ChatSession @relation(fields: [chatId], references: [id])
+  chat      ChatSession @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId    String
 
   createdAt DateTime @default(now())
@@ -103,10 +105,10 @@ model SessionUser {
   id        String   @id @default(cuid())
   access    Access  @default(READ)
 
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
 
-  session   SharedSession @relation(fields: [sessionId], references: [id])
+  session   SharedSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId String
 
   createdAt DateTime @default(now())
@@ -117,7 +119,7 @@ model SessionUser {
 model ArchivedChats{
   id        String   @id @default(cuid())
 
-  chat      ChatSession @relation(fields: [chatId], references: [id])
+  chat      ChatSession @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId    String
 
   createdAt DateTime @default(now())
