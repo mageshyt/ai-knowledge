@@ -18,14 +18,14 @@ const page = async ({ params }: PageProps) => {
   const reconstructedUrl = reconstructUrl({ url: params.url as string[] })
 
   console.log(reconstructedUrl)
-  await ragChat.context.add({
-    type: "html",
-    source: reconstructedUrl,
-
-  })
+  //await ragChat.context.add({
+  //  type: "html",
+  //  source: reconstructedUrl,
+  //
+  //})
   console.log(params.url)
   return (
-    <div>
+    <div className='p-4'>
       current page is {params.url}
     </div>
   )

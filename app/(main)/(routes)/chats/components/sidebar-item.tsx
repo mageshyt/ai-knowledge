@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { useKey } from "react-use";
+import { usePathname, useRouter } from 'next/navigation';
 
 import { Archive, Ellipsis, Pencil, Share, Trash } from 'lucide-react';
 import {
@@ -11,10 +14,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { updateSession } from '@/actions/chat-session/update-session';
 import { useModal } from '@/hooks/use-modal';
+import { cn } from '@/lib';
 
 interface SidebarItemProps {
   id: string;
@@ -22,14 +25,24 @@ interface SidebarItemProps {
 }
 
 export const SidebarItem = ({ id, name }: SidebarItemProps) => {
+
+  //------------------Hooks-------------------
+  const { openModal } = useModal()
+  const router = useRouter()
+  const pathname = usePathname()
+
   //------------------State-------------------
   const [edit, setEdit] = useState<boolean>(false)
   const [editName, setEditName] = useState<string>(name)
   const [updating, setUpdating] = useState<boolean>(false)
 
+  const isActivity = pathname.includes(id)
 
   //------------------Handlers-------------------
-  const { openModal } = useModal()
+
+  useKey('Escape', () => {
+    setEdit(false)
+  })
 
   // TODO: Add the ability to edit and delete chat session
   const handleEdit = async () => {
@@ -73,14 +86,37 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
     toast.error('Delete feature is not available yet')
   }
 
-  const handleArchive = () => {
-    toast.error('Archive feature is not available yet')
+  const handleArchive = async () => {
+    try {
+      setUpdating(true)
+      // Call the archive session API
+      const response = await updateSession({ sessionId: id, value: { archived: true } })
+      if (response && "error" in response) {
+        toast.error(response.error)
+        return;
+      }
+      // If successful, show success toast
+      toast.success('Session archived successfully')
+      // Redirect to the chats page
+      router.push('/chats')
+    }
+    catch (error) {
+      console.error(error)
+      toast.error('Failed to archive');
+    }
+    finally {
+      setUpdating(false)
+    }
   }
 
 
   return (
     <div
-      className='relative flex group items-center gap-2 px-4 py-3  rounded-md text-sm hover:dark:bg-neutral-800 hover:bg-slate-100'
+      className={cn('relative flex group items-center gap-2 px-4 py-3  rounded-md text-sm hover:dark:bg-neutral-800 hover:bg-slate-100',
+
+        isActivity ? 'bg-slate-100 dark:bg-neutral-800' : 'dark:hover:bg-neutral-800'
+
+      )}
     >
 
       {
@@ -147,7 +183,7 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
           {/* ----------------Button to delete-------------- */}
 
           <DropdownMenuItem
-            onClick={() => openModal('confirm-modal', { sessionId: id, sessionName: editName, handleConfirm: handleArchive,actionType:'archive' })}
+            onClick={() => openModal('confirm-modal', { sessionId: id, sessionName: editName, handleConfirm: handleArchive, actionType: 'archive' })}
           >
             <Archive className="size-4 mr-2" />
             Archive
@@ -156,7 +192,7 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
           <DropdownMenuItem
 
             className='text-red-500'
-            onClick={() => openModal('confirm-modal', { sessionId: id, sessionName: editName, handleConfirm: handleDelete,actionType:'delete' })}
+            onClick={() => openModal('confirm-modal', { sessionId: id, sessionName: editName, handleConfirm: handleDelete, actionType: 'delete' })}
           >
             <Trash className="size-4 mr-2" />
             Delete

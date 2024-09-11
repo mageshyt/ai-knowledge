@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, ToastProvider } from "@/components/providers";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,8 @@ export default function RootLayout({
           enableSystem={false}
           storageKey="ai-knowledge-theme"
         >
-      <ToastProvider/>
+          <ToastProvider />
+          <ModalProvider />
           <ClerkProvider>{children}</ClerkProvider>
         </ThemeProvider>
       </body>
