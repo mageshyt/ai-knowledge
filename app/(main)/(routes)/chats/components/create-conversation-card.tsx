@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { createSession } from '@/actions/chat-session/create-session';
@@ -23,46 +23,50 @@ export const CreateConversationCard = () => {
 
   const [url, setUrl] = useState('');
   const router = useRouter();
-
+  const [isPending, startTransition] = useTransition();
 
 
   // ---------------------------------- Handlers--------------------------------------
 
   const createConversation = async () => {
-    try {
-
-      const response = await createSession({ contentUrl: url });
-
-      if (response) {
-        toast.success('Conversation created successfully');
-        //router.refresh()
-        router.push(`/chats/${response.id}`);
-        setUrl('');
-      }
+    if (!url || !url.match(/(http|https):\/\/[^ "]+$/) || isPending) {
+      toast.error('Please enter a valid URL');
+      return;
     }
-    catch (e) {
+
+    try {
+      startTransition(async () => {
+        const response = await createSession({ contentUrl: url });
+        if (response) {
+          toast.success('Conversation created successfully');
+          router.push(`/chats/${response.id}`);
+          setUrl('');  // Clear input field
+        }
+      });
+    } catch (e) {
       console.error('Error while creating conversation ', e);
       toast.error('Error while creating conversation');
     }
-  }
+  };
 
   const handlePaste = () => {
+    if (!navigator.clipboard) {
+      toast.error('Clipboard API not supported');
+      return;
+    }
     try {
       navigator.clipboard.readText().then((text) => {
-        // check if the text is a valid URL
         if (!text.match(/(http|https):\/\/[^ "]+$/)) {
           toast.error('Invalid URL');
           return;
         }
-
         setUrl(text);
       });
-    }
-    catch (e) {
+    } catch (e) {
       console.error('Error while pasting URL ', e);
       toast.error('Error while pasting URL');
     }
-  }
+  };
 
 
   return (
@@ -92,6 +96,7 @@ export const CreateConversationCard = () => {
       </CardContent>
       <CardFooter>
         <Button
+          disabled={isPending || !url || !url.match(/(http|https):\/\/[^ "]+$/)}
           onClick={createConversation}
           className='w-full' >
           Start Conversation

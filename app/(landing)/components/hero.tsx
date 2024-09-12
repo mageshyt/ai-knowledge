@@ -10,7 +10,7 @@ export const Hero = () => {
         🌐 <hr className="mx-2 h-4 w-[1px] shrink-0 bg-gray-300" />{" "}
         <span
           className={cn(
-            `inline animate-gradient bg-gradient-to-r from-[#1d4ed8] via-[#9333ea] to-[#1d4ed8] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`
+            `inline animate-gradient bg-gradient-to-r from-[#FEF9D9] via-[#D8A25E] to-[#98DED9] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`
           )}
         >
           Introducing KnowledgeVerse
