@@ -15,6 +15,9 @@ export const getSessionList = async () => {
         userId,
         archived: false
       },
+      orderBy: {
+        updatedAt: 'desc'
+      }
     })
 
 

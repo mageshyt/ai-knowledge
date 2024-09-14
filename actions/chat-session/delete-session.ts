@@ -37,6 +37,8 @@ export const deleteSession= async ({ sessionId }: ChatSessionProps) => {
       }
     });
 
+    console.log('Session deleted successfully')
+
 
 
     return {
