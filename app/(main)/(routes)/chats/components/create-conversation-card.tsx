@@ -39,7 +39,11 @@ export const CreateConversationCard = () => {
         const response = await createSession({ contentUrl: url });
         if (response) {
           toast.success('Conversation created successfully');
-          router.push(`/chats/${response.id}`);
+          router.refresh()
+
+          setTimeout(() => {
+            router.push(`/chats/${response.id}`);
+          }, 1000);
           setUrl('');  // Clear input field
         }
       });

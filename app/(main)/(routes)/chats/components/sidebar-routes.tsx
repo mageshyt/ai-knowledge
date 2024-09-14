@@ -9,12 +9,15 @@ import ActionTooltip from '@/components/global/action-tooltip';
 import { SidebarItem } from './sidebar-item';
 
 export const SideBarRoutes = async () => {
+
   const { userId } = auth();
+
   if (!userId) {
     redirect('/')
   }
 
   const data: ChatSession[] | null = await getSessionList();
+  console.log("data", data)
 
   return (
     <div className='flex flex-col gap-4 p-4 relative h-full'>
@@ -23,7 +26,9 @@ export const SideBarRoutes = async () => {
           <ListView
             items={data}
             render={(item, idx) => (
-              <SidebarItem {...item} />
+              <SidebarItem
+                key={item.id}
+                {...item} />
             )
             }
           />

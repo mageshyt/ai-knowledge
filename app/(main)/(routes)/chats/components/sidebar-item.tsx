@@ -92,11 +92,18 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
         toast.error(response.error)
         return;
       }
-
       toast.success('Session deleted successfully');
 
-      // Redirect to the chats page
-      router.push('/chats')
+      // Redirect to the chats page only if the current session is deleted
+      if (isActivity) {
+        router.push('/chats')
+      }
+      // Refresh the page
+      setTimeout(() => {
+        router.refresh()
+      }
+        , 1500)
+
     }
     catch (error) {
       console.error(error)
@@ -120,7 +127,14 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
       // If successful, show success toast
       toast.success('Session archived successfully')
       // Redirect to the chats page
-      router.push('/chats')
+      if (isActivity) {
+        router.push('/chats')
+      }
+      // Refresh the page
+      setTimeout(() => {
+        router.refresh()
+      }
+        , 1000)
     }
     catch (error) {
       console.error(error)
