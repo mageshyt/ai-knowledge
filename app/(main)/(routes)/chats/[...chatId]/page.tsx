@@ -17,8 +17,6 @@ const ChatPage = async ({ params }: PageProps) => {
     },
   });
 
-
-
   const ragChatContent = contents.map((content) => {
     return {
       source: content.contentUrl,
@@ -29,7 +27,7 @@ const ChatPage = async ({ params }: PageProps) => {
   );
 
   const isAlreadyIndexed = await redis.sismember("indexed-urls", ragChatContent[0].source);
-  console.log("isAlreadyIndexed", isAlreadyIndexed);
+  //console.log("isAlreadyIndexed", isAlreadyIndexed);
 
   if (!isAlreadyIndexed) {
     await ragChat.context.add(

@@ -25,7 +25,6 @@ export const ChatWrapper = ({sessionId}:ChatWrapperProps) => {
       {/** Chat input */}
     <SearchBar
       onSubmit={handleSubmit}
-
       >
       <Mic className='size-4 ml-1 text-muted-foreground' />
       <input
@@ -37,7 +36,7 @@ export const ChatWrapper = ({sessionId}:ChatWrapperProps) => {
       <SendHorizonal
           type='button'
         onClick={handleSubmit}
-          className='size-4 mr-1 text-muted-foreground' />
+          className='size-4 cursor-pointer mr-1 text-muted-foreground' />
     </SearchBar>
 
 
