@@ -25,9 +25,7 @@ const ChatPage = async ({ params }: PageProps) => {
     };
   }
   );
-
   const isAlreadyIndexed = await redis.sismember("indexed-urls", ragChatContent[0].source);
-  //console.log("isAlreadyIndexed", isAlreadyIndexed);
 
   if (!isAlreadyIndexed) {
     await ragChat.context.add(
@@ -38,9 +36,9 @@ const ChatPage = async ({ params }: PageProps) => {
       }
     )
     await redis.sadd("indexed-urls", ragChatContent[0].source);
-    console.log("added to index", ragChatContent[0].source);
   }
-  //// TODO : Add the chatId to the chat
+
+
 
   return <ChatWrapper sessionId={params.chatId} />;
 };

@@ -8,10 +8,10 @@ interface ChatWrapperProps {
   sessionId: string;
 }
 
-export const ChatWrapper = ({sessionId}:ChatWrapperProps) => {
-  const {messages,handleInputChange,handleSubmit,input}=useChat({
-    api:'/api/chat-stream',
-    body:{sessionId}
+export const ChatWrapper = ({ sessionId }: ChatWrapperProps) => {
+  const { messages, handleInputChange, handleSubmit, input } = useChat({
+    api: '/api/chat-stream',
+    body: { sessionId }
   })
   return (
     <Wrapper>
@@ -23,21 +23,21 @@ export const ChatWrapper = ({sessionId}:ChatWrapperProps) => {
 
 
       {/** Chat input */}
-    <SearchBar
-      onSubmit={handleSubmit}
+      <SearchBar
+        onSubmit={handleSubmit}
       >
-      <Mic className='size-4 ml-1 text-muted-foreground' />
-      <input
-        value={input}
-        onChange={handleInputChange}
-        className='bg-transparent h-full outline-none w-full border-none p-2 '
-        placeholder='Search for a chat'
-      />
-      <SendHorizonal
+        <Mic className='size-4 ml-1 text-muted-foreground' />
+        <input
+          value={input}
+          onChange={handleInputChange}
+          className='bg-transparent h-full outline-none w-full border-none p-2 '
+          placeholder='Search for a chat'
+        />
+        <SendHorizonal
           type='button'
-        onClick={handleSubmit}
+          onClick={handleSubmit}
           className='size-4 cursor-pointer mr-1 text-muted-foreground' />
-    </SearchBar>
+      </SearchBar>
 
 
     </Wrapper>
@@ -47,7 +47,7 @@ export const ChatWrapper = ({sessionId}:ChatWrapperProps) => {
 
 const Wrapper = tw.div`min-h-full flex flex-col justify-between gap-2 p-4`;
 const MessaegWrapper = tw.div`
-flex-1 overflow-y-auto h-full
+flex-1 h-full
 flex flex-col justify-between`;
 
 const SearchBar = tw.div`
