@@ -1,6 +1,7 @@
 import { db } from "@/lib";
-import { ragChat } from "@/lib/rag-chat";
+import { ragChat, redis } from "@/lib";
 import React from "react";
+import { ChatWrapper } from "./components/chat-wrapper";
 
 interface PageProps {
   params: {
@@ -9,25 +10,41 @@ interface PageProps {
 }
 
 const ChatPage = async ({ params }: PageProps) => {
-  console.log("params", params);
+
   const contents = await db.content.findMany({
     where: {
       chatId: params.chatId.toString(),
     },
   });
-  console.log("contents", contents);
+
+
 
   const ragChatContent = contents.map((content) => {
     return {
       source: content.contentUrl,
       type: content.contentType === "WEB" ? "html" : "text",
+      config: { chunckOverlap: 50, chunckSize: 200 }
     };
   }
   );
 
-  // TODO : Add the chatId to the chat
+  const isAlreadyIndexed = await redis.sismember("indexed-urls", ragChatContent[0].source);
+  console.log("isAlreadyIndexed", isAlreadyIndexed);
 
-  return <div className="p-4">current page is {params.chatId}</div>;
+  if (!isAlreadyIndexed) {
+    await ragChat.context.add(
+      {
+        source: ragChatContent[0].source,
+        type: "html",
+        config: { chunkOverlap: 50, chunkSize: 200 }
+      }
+    )
+    await redis.sadd("indexed-urls", ragChatContent[0].source);
+    console.log("added to index", ragChatContent[0].source);
+  }
+  //// TODO : Add the chatId to the chat
+
+  return <ChatWrapper sessionId={params.chatId} />;
 };
 
 export default ChatPage;
