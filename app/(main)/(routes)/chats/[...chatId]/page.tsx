@@ -10,7 +10,7 @@ interface PageProps {
 }
 
 const ChatPage = async ({ params }: PageProps) => {
-
+  // 5 sec load time
   const contents = await db.content.findMany({
     where: {
       chatId: params.chatId.toString(),

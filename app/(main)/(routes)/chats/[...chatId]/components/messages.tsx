@@ -10,7 +10,7 @@ interface MessagesProps {
 export const Messages = ({ messages }: MessagesProps) => {
   return (
     <div
-      className='flex-1 overflow-y-auto flex flex-col'
+      className=' flex-1 flex flex-col py-4 gap-y-2 overflow-y-scroll  scrollbar-thin scrollbar-thumb-zinc-800 '
     >
       {
         messages.length > 0 ? <ListView
