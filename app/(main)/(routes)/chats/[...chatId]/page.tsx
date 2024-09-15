@@ -17,6 +17,12 @@ const ChatPage = async ({ params }: PageProps) => {
     },
   });
 
+  // TODO : Connect with Socket and our own db
+
+  const initialMessages = await ragChat.history.getMessages({
+    sessionId: params.chatId,
+  })
+
   const ragChatContent = contents.map((content) => {
     return {
       source: content.contentUrl,
@@ -25,7 +31,10 @@ const ChatPage = async ({ params }: PageProps) => {
     };
   }
   );
+
   const isAlreadyIndexed = await redis.sismember("indexed-urls", ragChatContent[0].source);
+
+
 
   if (!isAlreadyIndexed) {
     await ragChat.context.add(
@@ -40,7 +49,7 @@ const ChatPage = async ({ params }: PageProps) => {
 
 
 
-  return <ChatWrapper sessionId={params.chatId} />;
+  return <ChatWrapper sessionId={params.chatId} initialMessages={initialMessages} />;
 };
 
 export default ChatPage;

@@ -1,18 +1,19 @@
 "use client";
-import { useChat } from "ai/react";
-import { Mic, SendHorizonal } from "lucide-react";
+import { Message, useChat } from "ai/react";
 import tw from "tailwind-styled-components";
 import { Messages } from "./messages";
 import ChatInput from "./chat-input";
 
 interface ChatWrapperProps {
   sessionId: string;
+  initialMessages: Message[];
 }
 
-export const ChatWrapper = ({ sessionId }: ChatWrapperProps) => {
+export const ChatWrapper = ({ sessionId, initialMessages }: ChatWrapperProps) => {
   const { messages, handleInputChange, handleSubmit, input, setInput } = useChat({
     api: '/api/chat-stream',
-    body: { sessionId }
+    body: { sessionId },
+    initialMessages,
   })
   return (
     <Wrapper>

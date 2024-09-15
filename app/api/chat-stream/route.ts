@@ -19,9 +19,6 @@ export const POST = async (req: NextRequest) => {
       sessionId: sessionId
     })
 
-    console.log('response', response)
-
-
     return aiUseChatAdapter(response)
   }
   catch (e) {
