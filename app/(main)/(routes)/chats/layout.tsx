@@ -31,4 +31,4 @@ const Wrapper = tw.div`h-screen`;
 
 const SidebarWrapper = tw.div`fixed inset-y-0 z-50 hidden h-full w-72 flex-col lg:flex  `;
 
-const NavbarWrapper = tw.div`fixed inset-y-0 z-50 h-12 w-full block lg:hidden `;
+const NavbarWrapper = tw.div`fixed inset-y-0 z-50 h-12 w-full lg:pl-72`;
