@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider, ToastProvider } from "@/components/providers";
+import { ThemeProvider, ToastProvider, SocketProvider, ModalProvider } from "@/components/providers";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ModalProvider } from "@/components/providers/modal-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,19 +17,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className,"min-h-screen antialiased"}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          storageKey="ai-knowledge-theme"
-        >
-          <ToastProvider />
-          <ModalProvider />
-          <ClerkProvider>{children}</ClerkProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className, "min-h-screen antialiased"}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            storageKey="ai-knowledge-theme"
+          >
+            <SocketProvider>
+
+              <ToastProvider />
+              <ModalProvider />
+              {children}
+            </SocketProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
