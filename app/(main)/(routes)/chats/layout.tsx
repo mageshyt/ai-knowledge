@@ -19,7 +19,7 @@ const ChatScreenLayout = ({ children }: { children: React.ReactNode }) => {
       </SidebarWrapper>
 
       {/* Main Content */}
-      <main className="lg:pl-72 h-full pt-10 lg:pt-0">{children}</main>
+      <main className="lg:pl-72 h-full pt-10 lg:pt-10">{children}</main>
     </Wrapper>
   );
 };
