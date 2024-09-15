@@ -20,7 +20,7 @@ export const ShareModal = () => {
   const [shareableLink, setShareableLink] = useState<string>(window.location.href);
 
   return (
-    <ResponsiveModal open={true}>
+    <ResponsiveModal >
       <ResponsiveModalTrigger asChild>
 
         <Button
