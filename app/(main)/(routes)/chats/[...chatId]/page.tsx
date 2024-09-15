@@ -21,6 +21,8 @@ const ChatPage = async ({ params }: PageProps) => {
 
   const initialMessages = await ragChat.history.getMessages({
     sessionId: params.chatId,
+    amount: 10,
+    startIndex: 0,
   })
 
   const ragChatContent = contents.map((content) => {
