@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider, ToastProvider, SocketProvider, ModalProvider } from "@/components/providers";
+import {
+  ThemeProvider,
+  ToastProvider,
+  SocketProvider,
+  ModalProvider,
+} from "@/components/providers";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib";
 
@@ -18,24 +23,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={cn(inter.className, "min-h-screen antialiased")}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
-            storageKey="ai-knowledge-theme"
-          >
+    <html lang="en">
+      <body className={cn(inter.className, "min-h-screen antialiased")}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          storageKey="ai-knowledge-theme"
+        >
+          <ClerkProvider>
             <SocketProvider>
-
               <ToastProvider />
               <ModalProvider />
               {children}
             </SocketProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          </ClerkProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

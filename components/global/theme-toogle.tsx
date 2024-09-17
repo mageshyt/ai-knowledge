@@ -15,17 +15,15 @@ import ClientWrapper from "./client-wrapper";
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
-  console.log(theme);
 
   return (
     <ClientWrapper>
 
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-      
+
         <button
           className="w-full flex  items-center justify-start p-2 hover:bg-gray-100/20 rounded-md font-light text-sm text-muted-foreground outline-none"
-          variant="ghost"
         >
           {theme == "dark" ? (
             <Moon className="size-4  scale-0 transition-all dark:rotate-0 dark:scale-100 mr-2" />
