@@ -7,13 +7,17 @@ import { CreateConversationCard } from './components/create-conversation-card';
 
 
 const ChatsPage = () => {
-  return <Container>
+  return <Wrapper>
+
+    <MainContainer>
+
     <Logo type='full' size='lg' />
     {/* TODO : Info Banner */}
 
     <div className='mt-10'>
       <CreateConversationCard />
     </div>
+    </MainContainer>
 
 
 
@@ -27,11 +31,12 @@ const ChatsPage = () => {
       <SendHorizonal className='size-4 mr-1 text-muted-foreground' />
     </SearchBar>
 
-  </Container>;
+  </Wrapper>;
 };
 
 export default ChatsPage;
 
 
-const Container = tw.div`relative h-screen w-full flex flex-col p-4 items-center justify-center`
-const SearchBar = tw.div`absolute border bg-white/5 bottom-10 xl:max-w-4xl max-w-md  md:max-w-xl  lg:max-w-2xl w-full flex items-center justify-between p-2 rounded-xl`
+const Wrapper= tw.div`h-full w-full flex flex-col p-4 items-center justify-between`
+const MainContainer=tw.div`flex-1 flex flex-col items-center justify-center gap-4`
+const SearchBar = tw.div`border bg-white/5 xl:max-w-4xl max-w-md  md:max-w-xl  lg:max-w-2xl w-full flex items-center justify-between p-2 rounded-xl`
