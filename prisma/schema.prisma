@@ -42,7 +42,7 @@ model ChatSession {
   name      String   @default("New Chat")
   archived  Boolean @default(false)
   content   Content[]
-  inviteCode String? @unique
+  inviteCode String @unique
 
 
   user      User     @relation(fields: [userId], references: [id])

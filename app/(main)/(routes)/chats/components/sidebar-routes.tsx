@@ -24,10 +24,12 @@ export const SideBarRoutes = async () => {
         data ?
           <ListView
             items={data}
-            render={(item, idx) => (
+            render={(item) => (
               <SidebarItem
                 key={item.id}
-                {...item} />
+                {...item} 
+                inviteCode={item.inviteCode || ''}
+              />
             )
             }
           />
