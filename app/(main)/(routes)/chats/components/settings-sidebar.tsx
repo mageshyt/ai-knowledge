@@ -14,7 +14,9 @@ import { Shield } from "lucide-react";
 export const SettingsSidebar = () => {
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger
+        asChild
+      >
         <Button
           variant="ghost"
           className='size-8'
