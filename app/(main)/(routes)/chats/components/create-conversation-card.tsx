@@ -8,45 +8,68 @@ import { createSession } from '@/actions/chat-session/create-session';
 
 import { ArrowRight, Clipboard, Lock } from 'lucide-react';
 
+import { infer, z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+
 import {
   Card,
   CardHeader,
   CardContent,
-  CardFooter,
   CardTitle,
   CardDescription
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button';
+
+const formSchema = z.object({
+  contentUrl: z.string().url(),
+  name: z.string(),
+});
 
 export const CreateConversationCard = () => {
 
-  const [url, setUrl] = useState('');
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      contentUrl: '',
+      name: '',
+    }
+  })
+
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const { isValid, isSubmitting } = form.formState
 
 
   // ---------------------------------- Handlers--------------------------------------
 
-  const createConversation = async () => {
-    if (!url || !url.match(/(http|https):\/\/[^ "]+$/) || isPending) {
+  const createConversation = async (data: z.infer<typeof formSchema>) => {
+
+    if (!data.contentUrl.match(/(http|https):\/\/[^ "]+$/)) {
       toast.error('Please enter a valid URL');
       return;
     }
-
     try {
-      startTransition(async () => {
-        const response = await createSession({ contentUrl: url });
-        if (response) {
-          toast.success('Conversation created successfully');
-          router.refresh()
+      console.log(data)
 
-          setTimeout(() => {
-            router.push(`/chats/${response.id}`);
-          }, 1000);
-          setUrl('');  // Clear input field
-        }
-      });
+      const response = await createSession(data);
+      if (response) {
+        toast.success('Conversation created successfully');
+        router.refresh()
+
+        setTimeout(() => {
+          router.push(`/chats/${response.id}`);
+        }, 1000);
+
+        form.reset();
+      }
     } catch (e) {
       console.error('Error while creating conversation ', e);
       toast.error('Error while creating conversation');
@@ -64,7 +87,7 @@ export const CreateConversationCard = () => {
           toast.error('Invalid URL');
           return;
         }
-        setUrl(text);
+        form.setValue('contentUrl', text)
       });
     } catch (e) {
       console.error('Error while pasting URL ', e);
@@ -74,6 +97,7 @@ export const CreateConversationCard = () => {
 
 
   return (
+
     <Card>
       <CardHeader>
         <CardTitle className='flex gap-2'>
@@ -86,27 +110,68 @@ export const CreateConversationCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className='relative'>
-        <Input
-          type="text"
-          placeholder="Enter URL here"
-          className="pr-8"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
-        <Clipboard
-          onClick={handlePaste}
-          className='absolute right-8 cursor-pointer top-[10px] text-muted-foreground size-5' />
+        {/* ------------------form ------------- */}
+        <Form {...form} >
+          <form
+            onSubmit={form.handleSubmit(createConversation)}
+            className='flex flex-col gap-4'
+          >
+            {/* ------------------session name------------- */}
+
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Session Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder='Session name'
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* ------------------content url------------- */}
+
+            <FormField
+              control={form.control}
+              name="contentUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Content URL</FormLabel>
+                  <FormControl
+                  >
+                    <div className='relative'>
+                      <Input
+                        type="text"
+                        placeholder="Content URL"
+                        className="pr-8"
+                        {...field}
+                      />
+                      <Clipboard
+                        onClick={handlePaste}
+                        className='absolute right-2 cursor-pointer top-[10px] text-muted-foreground size-5' />
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )
+              }
+            />
+            {/* ------------------submit button ------------- */}
+            <Button
+              disabled={!isValid || isSubmitting}
+              className='w-full' >
+              Start Conversation
+              <ArrowRight className='size-4 ml-2' />
+            </Button>
+          </form>
+
+        </Form>
 
       </CardContent>
-      <CardFooter>
-        <Button
-          disabled={isPending || !url || !url.match(/(http|https):\/\/[^ "]+$/)}
-          onClick={createConversation}
-          className='w-full' >
-          Start Conversation
-          <ArrowRight className='size-4 ml-2' />
-        </Button>
-      </CardFooter>
     </Card>
   )
 }

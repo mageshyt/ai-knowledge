@@ -4,9 +4,10 @@ import { auth } from "@clerk/nextjs/server";
 
 type ChatSessionProps = {
   contentUrl: string;
+  name: string;
 
 }
-export const createSession = async ({ contentUrl }: ChatSessionProps) => {
+export const createSession = async ({ contentUrl,name }:ChatSessionProps ) => {
   try {
     const { userId } = auth()
 
@@ -14,9 +15,11 @@ export const createSession = async ({ contentUrl }: ChatSessionProps) => {
       return null
     }
 
+
     const chats = await db.chatSession.create({
       data: {
         userId,
+        name:name,
         content: {
           create: {
             contentUrl: contentUrl
