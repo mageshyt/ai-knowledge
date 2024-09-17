@@ -23,9 +23,10 @@ import { deleteSession } from '@/actions/chat-session/delete-session';
 interface SidebarItemProps {
   id: string;
   name: string;
+  inviteCode: string;
 }
 
-export const SidebarItem = ({ id, name }: SidebarItemProps) => {
+export const SidebarItem = ({ id, name,inviteCode }: SidebarItemProps) => {
 
   //------------------Hooks-------------------
   const { openModal } = useModal()
@@ -76,10 +77,6 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
     }
   }
 
-
-  const handleShare = async () => {
-    toast.error('Share feature is not available yet')
-  }
 
 
   const handleDelete = async () => {
@@ -207,7 +204,7 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            onClick={handleShare}
+            onClick={()=>openModal('invite-modal', { sessionId: id,inviteCode:inviteCode })}
           >
             <Share className="size-4 mr-2" />
             Share
