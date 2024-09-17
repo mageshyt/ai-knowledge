@@ -23,7 +23,7 @@ import { createInvitation } from "@/actions/invite/create-invitation";
 export const InviteModal = () => {
   // ----------------------------- context -----------------------------
 
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data ,openModal} = useModal();
 
   const isModelOpen = isOpen && type === "invite-modal";
 
@@ -34,11 +34,10 @@ export const InviteModal = () => {
   // ----------------------------- state -----------------------------
 
   const [copied, setCopied] = useState(false);
-  const [initialInviteCode, setInitalInviteCode] = useState<string>(inviteCode || "");
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const inviteUrl = `${origin}/invite/${initialInviteCode}`;
+  const inviteUrl = `${origin}/invite/${inviteCode}`;
 
   // ----------------------------- handlers -----------------------------
   //
@@ -62,7 +61,9 @@ export const InviteModal = () => {
         toast.error(response.error);
       }
 
-      setInitalInviteCode(response.invitationId || "");
+        toast.success("New link generated successfully");
+        openModal("invite-modal", { inviteCode: response.invitationId, sessionId });
+
     }
 
     catch (error) {
@@ -106,6 +107,7 @@ export const InviteModal = () => {
             <Input
               disabled={loading}
               value={inviteUrl}
+              readOnly
             />
             {/* copy btn */}
             <Button disabled={loading} onClick={copyInviteLink} size="icon">

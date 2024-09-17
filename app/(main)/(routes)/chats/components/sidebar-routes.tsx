@@ -28,7 +28,7 @@ export const SideBarRoutes = async () => {
               <SidebarItem
                 key={item.id}
                 {...item} 
-                inviteCode={item.inviteCode || ''}
+                inviteCode={item.inviteCode}
               />
             )
             }
