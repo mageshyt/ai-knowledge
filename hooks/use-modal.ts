@@ -3,10 +3,12 @@ import { create } from "zustand";
 
 export type ModalType =
   | "confirm-modal"
+  | "invite-modal"
   ;
 
 interface ModalData {
   sessionId?: string;
+  inviteCode?: string;
   actionType?: "archive" | "delete";
   sessionName?: string;
   handleConfirm?: () => void;

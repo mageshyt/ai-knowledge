@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ConfirmModal } from "../modals/confirmation-modal";
+import { InviteModal } from "../modals/invite-modal";
 
 export const ModalProvider = () => {
   // Hydration Fix
@@ -15,6 +16,7 @@ export const ModalProvider = () => {
   return (
     <>
       <ConfirmModal/>
+      <InviteModal/>
     </>
   );
 };
