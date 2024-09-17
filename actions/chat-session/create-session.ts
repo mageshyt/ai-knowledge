@@ -1,6 +1,7 @@
 "use server";
 import { db } from "@/lib";
 import { auth } from "@clerk/nextjs/server";
+import { v4 as uuid } from 'uuid';
 
 type ChatSessionProps = {
   contentUrl: string;
@@ -20,6 +21,7 @@ export const createSession = async ({ contentUrl,name }:ChatSessionProps ) => {
       data: {
         userId,
         name:name,
+        inviteCode:uuid(),
         content: {
           create: {
             contentUrl: contentUrl
