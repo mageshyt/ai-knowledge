@@ -37,7 +37,7 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
   const [editName, setEditName] = useState<string>(name)
   const [updating, setUpdating] = useState<boolean>(false)
 
-  const isActivity = pathname.includes(id)
+  const isActivity = pathname?.includes(id)
 
   //------------------Handlers-------------------
 

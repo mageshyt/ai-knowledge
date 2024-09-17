@@ -17,7 +17,6 @@ export const SideBarRoutes = async () => {
   }
 
   const data: ChatSession[] | null = await getSessionList();
-  console.log("data", data)
 
   return (
     <div className='flex flex-col gap-4 p-4 relative h-full'>
