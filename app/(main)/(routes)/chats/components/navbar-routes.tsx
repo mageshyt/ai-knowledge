@@ -7,7 +7,7 @@ export const NavbarRoutes = () => {
   return (
     <div className='flex items-center gap-2'>
 
-      <SocketIndicatorBadge /> 
+      <SocketIndicatorBadge />
       <ShareModal />
       <SettingsSidebar/>
 

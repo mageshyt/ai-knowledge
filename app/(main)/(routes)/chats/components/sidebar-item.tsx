@@ -45,7 +45,6 @@ export const SidebarItem = ({ id, name }: SidebarItemProps) => {
     setEdit(false)
   })
 
-  // TODO: Add the ability to edit and delete chat session
   const handleEdit = async () => {
 
     try {
