@@ -1,14 +1,13 @@
 "use client";
 
 import { toast } from 'sonner';
-import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { createSession } from '@/actions/chat-session/create-session';
 
 import { ArrowRight, Clipboard, Lock } from 'lucide-react';
 
-import { infer, z } from 'zod';
+import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
