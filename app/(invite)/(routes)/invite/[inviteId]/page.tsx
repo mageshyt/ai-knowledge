@@ -24,60 +24,35 @@ const InvitePage = async ({
   const session = await db.chatSession.findUnique({
     where: {
       inviteCode: inviteId,
-
     },
-    include: {
-      sharedSession: true
-    }
   })
 
   if (!session) {
     return redirect('/');
   }
-  // ! owner can't join his own chatSession
-  if (session.userId === userId) {
-    return redirect(`/chats/${session.id}`);
-  }
 
-  const isExisting = await db.sessionUser.findFirst({
-    where: {
-      sessionId: session.sharedSession?.id,
-      userId
-    }
-  })
-
-  if (isExisting) {
-    return redirect(`/chats/${session.id}`);
-  }
-
-  const sessionUser = await db.sharedSession.upsert(
-    {
-      where: {
-        chatSessionId: session.id
-      },
-      create: {
-        chatSessionId: session.id,
-        sessionUser: {
-          create: {
-            userId
-          }
-        }
-      },
-      update: {
-        sessionUser: {
-          create: {
-            userId
-          }
-        }
+  const isExistingUser = await db.sessionUser.findUnique({
+    where:{
+      userId_sessionId:{
+        sessionId: session.id,
+        userId
       }
     }
-  )
+  });
 
-  if (sessionUser) {
+  if(isExistingUser){
     return redirect(`/chats/${session.id}`);
   }
 
-  return null;
+  await db.sessionUser.create({
+    data:{
+      sessionId: session.id,
+      userId
+    }
+  });
+
+  return redirect(`/chats/${session.id}`);
+
 }
 
 export default InvitePage;
