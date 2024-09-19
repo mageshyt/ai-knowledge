@@ -8,9 +8,10 @@ type ChatSessionProps = {
   name: string;
 
 }
-export const createSession = async ({ contentUrl,name }:ChatSessionProps ) => {
+export const createSession = async ({ contentUrl, name }: ChatSessionProps) => {
   try {
     const { userId } = auth()
+    console.log('[createSession] userId', userId)
 
     if (!userId) {
       return null
@@ -20,11 +21,17 @@ export const createSession = async ({ contentUrl,name }:ChatSessionProps ) => {
     const chats = await db.chatSession.create({
       data: {
         userId,
-        name:name,
-        inviteCode:uuid(),
+        name: name,
+        inviteCode: uuid(),
         content: {
           create: {
             contentUrl: contentUrl
+          }
+        },
+        SessionUser: {
+          create: {
+            userId: userId,
+            access: 'ADMIN',
           }
         }
       }
