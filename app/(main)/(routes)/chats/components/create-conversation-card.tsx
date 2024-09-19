@@ -56,7 +56,6 @@ export const CreateConversationCard = () => {
       return;
     }
     try {
-      console.log(data)
 
       const response = await createSession(data);
       if (response) {
@@ -68,6 +67,9 @@ export const CreateConversationCard = () => {
         }, 1000);
 
         form.reset();
+      }
+      else {
+        toast.error('Error while creating conversation');
       }
     } catch (e) {
       console.error('Error while creating conversation ', e);
