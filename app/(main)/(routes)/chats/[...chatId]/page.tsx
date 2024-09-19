@@ -2,6 +2,8 @@ import { db } from "@/lib";
 import { ragChat, redis } from "@/lib";
 import React from "react";
 import { ChatWrapper } from "./components/chat-wrapper";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 interface PageProps {
   params: {
@@ -10,7 +12,28 @@ interface PageProps {
 }
 
 const ChatPage = async ({ params }: PageProps) => {
-  // 5 sec load time
+
+  const {userId}=auth();
+  if(!userId){
+    return redirect('/');
+  }
+
+  // check if the user has permission to access the chat
+
+  const hasPermission = await db.sessionUser.findUnique({
+    where:{
+      userId_sessionId:{
+        userId:userId,
+        sessionId:params.chatId.toString()
+      }
+    }
+  });
+
+  if(!hasPermission){
+    return redirect('/');
+  }
+
+
   const contents = await db.content.findMany({
     where: {
       chatId: params.chatId.toString(),
