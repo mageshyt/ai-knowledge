@@ -24,9 +24,10 @@ interface SidebarItemProps {
   id: string;
   name: string;
   inviteCode: string;
+  isShared?: boolean;
 }
 
-export const SidebarItem = ({ id, name,inviteCode }: SidebarItemProps) => {
+export const SidebarItem = ({ id, name, inviteCode, isShared = false }: SidebarItemProps) => {
 
   //------------------Hooks-------------------
   const { openModal } = useModal()
@@ -141,6 +142,8 @@ export const SidebarItem = ({ id, name,inviteCode }: SidebarItemProps) => {
     }
   }
 
+  const isAdmin = !isShared;
+
 
   return (
     <div
@@ -177,11 +180,8 @@ export const SidebarItem = ({ id, name,inviteCode }: SidebarItemProps) => {
           </Link>
       }
       {/* Button to edit  */}
-      <DropdownMenu
-      >
-        <DropdownMenuTrigger
-          asChild
-        >
+      <DropdownMenu >
+        <DropdownMenuTrigger asChild >
           <button
             className={cn('group-hover:opacity-100 opacity-0 focus:opacity-100 outline-none focus:outline-none',
               edit || isActivity ? 'opacity-100' : 'opacity-0',
@@ -193,18 +193,18 @@ export const SidebarItem = ({ id, name,inviteCode }: SidebarItemProps) => {
           </button>
         </DropdownMenuTrigger>
         {/* ----------------Button to Edit and Share-------------- */}
-        <DropdownMenuContent
-          className='w-40'
-        >
+        <DropdownMenuContent className='w-40' >
           <DropdownMenuItem
             onClick={() => setEdit(!edit)}
+            disabled={!isAdmin}
           >
             <Pencil className="size-4 mr-2" />
             Edit
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            onClick={()=>openModal('invite-modal', { sessionId: id,inviteCode:inviteCode })}
+
+            onClick={() => openModal('invite-modal', { sessionId: id, inviteCode: inviteCode })}
           >
             <Share className="size-4 mr-2" />
             Share
@@ -216,6 +216,7 @@ export const SidebarItem = ({ id, name,inviteCode }: SidebarItemProps) => {
           {/* ----------------Button to delete-------------- */}
 
           <DropdownMenuItem
+            disabled={!isAdmin}
             onClick={() => openModal('confirm-modal', { sessionId: id, sessionName: editName, handleConfirm: handleArchive, actionType: 'archive' })}
           >
             <Archive className="size-4 mr-2" />
@@ -223,7 +224,7 @@ export const SidebarItem = ({ id, name,inviteCode }: SidebarItemProps) => {
           </DropdownMenuItem>
 
           <DropdownMenuItem
-
+            disabled={!isAdmin}
             className='text-red-500'
             onClick={() => openModal('confirm-modal', { sessionId: id, sessionName: editName, handleConfirm: handleDelete, actionType: 'delete' })}
           >

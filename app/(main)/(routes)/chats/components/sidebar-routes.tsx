@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation';
+import tw from 'tailwind-styled-components';
 
-import { ChatSession } from '@prisma/client';
 import { getSessionList } from '@/actions/chat-session/get-session-list';
 import { auth } from '@clerk/nextjs/server'
 
+import { Separator } from "@/components/ui/separator"
 import ListView from '@/components/global/list-view';
 import ActionTooltip from '@/components/global/action-tooltip';
 import { SidebarItem } from './sidebar-item';
@@ -16,35 +17,79 @@ export const SideBarRoutes = async () => {
     redirect('/')
   }
 
-  const data: ChatSession[] | null = await getSessionList();
+  const data = await getSessionList();
+
+  const { chats, sharedSession } = data;
 
   return (
-    <div className='flex flex-col gap-4 p-4 relative h-full'>
+    <Wrapper>
+
       {
-        data ?
+        chats && chats.length > 0 &&
+        <SessionWrapper>
           <ListView
-            items={data}
+            items={data.chats}
             render={(item) => (
               <SidebarItem
                 key={item.id}
-                {...item} 
+                {...item}
                 inviteCode={item.inviteCode}
               />
             )
             }
           />
-          :
-          <ActionTooltip label="Create a new chat session" side="bottom" align="center">
-            <p
-              className="text-center absolute cursor-pointer
-            top-1/2 left-1/2 transform -translate-x-1/2 w-full -translate-y-1/2
-            text-sm text-muted-foreground "
-            >
-              No chats session available
-            </p>
-          </ActionTooltip>
+
+        </SessionWrapper>
       }
-    </div>
+
+
+      {/* ----------------------- Shared session--------------------- */}
+
+      {
+        sharedSession && sharedSession.length > 0 &&
+        <SessionWrapper>
+          <p className="py-1 text-muted-foreground 
+                text-center  text-sm font-semibold">
+            Shared Sessions
+          </p>
+
+          <ListView
+            items={data.sharedSession}
+            render={(item) => (
+              <SidebarItem
+                key={item.id}
+                {...item}
+                inviteCode={item.inviteCode}
+                isShared={true}
+              />
+            )
+            }
+          />
+
+        </SessionWrapper>
+      }
+
+
+      {/* ----------------------- No session available--------------------- */}
+
+      {
+        chats.length === 0 && sharedSession.length === 0 &&
+        <ActionTooltip label="Create a new chat session" side="bottom" align="center">
+          <NoSession>
+            No chats session available
+          </NoSession>
+        </ActionTooltip>
+      }
+    </Wrapper>
   )
 }
 
+const Wrapper = tw.div`flex flex-col gap-4  relative h-full`
+
+const SessionWrapper = tw.div`p-4`
+
+const NoSession = tw.p`
+text-center absolute cursor-pointer
+top-1/2 left-1/2 transform -translate-x-1/2 w-full -translate-y-1/2
+text-sm text-muted-foreground 
+`
