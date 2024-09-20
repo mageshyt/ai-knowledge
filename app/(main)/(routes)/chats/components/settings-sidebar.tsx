@@ -1,6 +1,12 @@
+"use client";
+import { redirect, usePathname } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
+import { useQuery } from "@tanstack/react-query";
+
+import { getSessionUser } from "@/actions/sidebar/get-session-user";
+import { SafesessionUser } from "@/typings/typing";
 
 import { Button } from "@/components/ui/button"
-import { MdAdminPanelSettings } from "react-icons/md";
 
 import {
   Sheet,
@@ -11,9 +17,41 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Shield } from "lucide-react";
+import ListView from "@/components/global/list-view";
+import { SessionUserCard } from "./session-user";
+
+
 export const SettingsSidebar = () => {
+
+  const pathname = usePathname()
+  const { userId } = useAuth()
+
+  const sessionId = pathname?.split('/')[2] || ''
+
+  const {
+    data: users,
+    isError,
+    isPending,
+    error,
+  } = useQuery<SafesessionUser[]>({
+    queryKey: ["session-user"],
+    queryFn: () => getSessionUser({ sessionId }),
+  });
+
+
+  // TODO : Add the UI for the settings sidebar
+  if (isPending) return <Shield className="size-4 animate-pulse" />
+
+  if (isError) return <div>Error: {error.message}</div>
+
+  if (!userId) {
+    return redirect('/')
+  }
+
+
   return (
-    <Sheet>
+    <Sheet
+    >
       <SheetTrigger
         asChild
       >
@@ -23,7 +61,7 @@ export const SettingsSidebar = () => {
           size={'icon'}
         >
           <Shield
-            className="size-4"
+            className="size-4 animate-pulse"
           />
         </Button>
       </SheetTrigger>
@@ -38,10 +76,19 @@ export const SettingsSidebar = () => {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4 mt-4">
+          <h3
+            className="text-sm font-semibold"
+          >
+            Participants
+          </h3>
+          <ListView
+            items={users}
+            render={(user: SafesessionUser) => <SessionUserCard sessionUser={user} />}
+          />
         </div>
       </SheetContent>
-    </Sheet>
+    </Sheet >
   )
 }
 
