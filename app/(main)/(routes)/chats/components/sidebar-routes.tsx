@@ -1,10 +1,9 @@
 import { redirect } from 'next/navigation';
 import tw from 'tailwind-styled-components';
 
-import { getSessionList } from '@/actions/chat-session/get-session-list';
+import { getSessionList } from '@/actions/sidebar/get-session-list';
 import { auth } from '@clerk/nextjs/server'
 
-import { Separator } from "@/components/ui/separator"
 import ListView from '@/components/global/list-view';
 import ActionTooltip from '@/components/global/action-tooltip';
 import { SidebarItem } from './sidebar-item';
