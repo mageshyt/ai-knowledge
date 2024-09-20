@@ -9,6 +9,7 @@ import {
 } from "@/components/providers";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib";
+import QueryProvider from "@/components/providers/query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, "min-h-screen antialiased")}>
+         <QueryProvider>
+
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -39,6 +42,7 @@ export default function RootLayout({
             </SocketProvider>
           </ClerkProvider>
         </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
