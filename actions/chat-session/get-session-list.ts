@@ -1,13 +1,23 @@
 "use server";
 import { db } from "@/lib";
 import { auth } from "@clerk/nextjs/server";
+import { ChatSession } from "@prisma/client";
 
-export const getSessionList = async () => {
+
+type UserSessions = {
+  chats: ChatSession[],
+  sharedSession: ChatSession[]
+}
+
+export const getSessionList = async (): Promise<UserSessions> => {
   try {
     const { userId } = auth()
 
     if (!userId) {
-      return null
+      return {
+        chats: [],
+        sharedSession: []
+      }
     }
 
     const chats = await db.chatSession.findMany({
@@ -20,11 +30,32 @@ export const getSessionList = async () => {
       }
     })
 
+    const sharedSession = await db.chatSession.findMany({
+      where: {
+        archived: false,
+        SessionUser: {
+          some: {
+            userId
+          }
+        }
+      }
+    })
 
-    return chats;
+    // shard session may contain the same session as the user's session so filter it
+    const filteredSharedSession = sharedSession.filter(session => session.userId !== userId);
+
+
+    return {
+      chats,
+      sharedSession: filteredSharedSession
+    }
+
   }
   catch (error) {
     console.error(error)
-    return null
+    return {
+      chats: [],
+      sharedSession: []
+    }
   }
 }
