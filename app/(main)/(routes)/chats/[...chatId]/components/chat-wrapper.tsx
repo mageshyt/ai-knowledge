@@ -3,13 +3,15 @@ import { Message, useChat } from "ai/react";
 import tw from "tailwind-styled-components";
 import { Messages } from "./messages";
 import ChatInput from "./chat-input";
+import Show from "@/components/global/show";
 
 interface ChatWrapperProps {
   sessionId: string;
   initialMessages: Message[];
+  hasPermission: boolean;
 }
 
-export const ChatWrapper = ({ sessionId, initialMessages }: ChatWrapperProps) => {
+export const ChatWrapper = ({ sessionId, initialMessages, hasPermission }: ChatWrapperProps) => {
   const { messages, handleInputChange, handleSubmit, input, setInput } = useChat({
     api: '/api/chat-stream',
     body: { sessionId },
@@ -24,16 +26,23 @@ export const ChatWrapper = ({ sessionId, initialMessages }: ChatWrapperProps) =>
       </MessaegWrapper>
 
       {/*--------------- Chat Input------------- */}
-      <ChatInput
-        apiUrl='/api/chat-stream'
-        query={{ sessionId }}
-        name='content'
-        input={input}
-        handleSubmit={handleSubmit}
-        handleInputChange={handleInputChange}
-        setInput={setInput}
-      />
+      <Show>
 
+        <Show.When
+          isTrue={hasPermission}
+        >
+          <ChatInput
+            apiUrl='/api/chat-stream'
+            query={{ sessionId }}
+            name='content'
+            input={input}
+            handleSubmit={handleSubmit}
+            handleInputChange={handleInputChange}
+            setInput={setInput}
+          />
+
+        </Show.When>
+      </Show>
     </Wrapper >
   )
 }

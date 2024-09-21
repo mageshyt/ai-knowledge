@@ -12,7 +12,6 @@ const ChatsPage = () => {
     <MainContainer>
 
     <Logo type='full' size='lg' />
-    {/* TODO : Info Banner */}
 
     <div className='mt-10'>
       <CreateConversationCard />

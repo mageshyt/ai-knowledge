@@ -74,7 +74,11 @@ const ChatPage = async ({ params }: PageProps) => {
 
 
 
-  return <ChatWrapper sessionId={params.chatId} initialMessages={initialMessages} />;
+  return <ChatWrapper sessionId={params.chatId} 
+    initialMessages={initialMessages}
+    hasPermission={hasPermission.access === "ADMIN" ||
+      hasPermission.access === "READ_WRITE"}
+  />;
 };
 
 export default ChatPage;
