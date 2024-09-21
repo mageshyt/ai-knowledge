@@ -22,10 +22,10 @@ const Sidebar = () => {
         </Link>
       </div>
 
-      <Routes>
-        {/* <SidebarRoutes /> */}
-        <SideBarRoutes />
-      </Routes>
+        <Routes>
+          {/* <SidebarRoutes /> */}
+          <SideBarRoutes />
+        </Routes>
 
       {/* setting */}
       <SettingWrapper>
@@ -37,8 +37,13 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-const Wrapper = tw.div`h-full  border-r flex flex-col  overflow-y-auto  shadow-sm justify-between  relative`;
+const Wrapper = tw.div`h-full  border-r
+flex flex-col justify-between
+overflow-y-hidden shadow-sm  relative`;
 
-const Routes = tw.div`flex flex-col w-full justify-start h-full`;
+const Routes = tw.div`w-full max-h-[calc(100%-300px)]
+flex-1 flex flex-col 
+justify-start  overflow-y-auto
+`;
 
 const SettingWrapper = tw.div` border-t w-full `;
