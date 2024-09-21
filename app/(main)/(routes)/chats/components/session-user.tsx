@@ -27,7 +27,7 @@ import { removeSessionUser } from "@/actions/chat-session/remove-session-user";
 
 type SessionUserProps = {
   sessionUser: SafesessionUser;
-  refetch: () => void;
+  refetch: () => Promise<any>;
 };
 
 const roleIconMap: Record<Access, JSX.Element> = {
@@ -57,7 +57,7 @@ export const SessionUserCard = ({ sessionUser, refetch }: SessionUserProps) => {
       if ("error" in response) throw new Error(response.error);
 
       toast.success("User role updated successfully");
-      refetch();
+      await refetch();
       router.refresh();
     } catch (error) {
       console.error("Error updating user role", error);
@@ -77,7 +77,7 @@ export const SessionUserCard = ({ sessionUser, refetch }: SessionUserProps) => {
       if ("error" in response) throw new Error(response.error);
 
       toast.success("User removed successfully");
-      refetch();
+      await refetch();
       router.refresh();
     } catch (error) {
       console.error("Error removing user", error);

@@ -29,8 +29,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
-  contentUrl: z.string().url(),
-  name: z.string(),
+  contentUrl: z.string().url().max(200),
+  name: z.string().min(3).max(50),
 });
 
 export const CreateConversationCard = () => {
