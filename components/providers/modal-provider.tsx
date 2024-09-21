@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { ConfirmModal } from "../modals/confirmation-modal";
 import { InviteModal } from "../modals/invite-modal";
+import { ManageSessionModal } from "../modals/manage-archive-modal";
 
 export const ModalProvider = () => {
   // Hydration Fix
@@ -17,6 +18,7 @@ export const ModalProvider = () => {
     <>
       <ConfirmModal/>
       <InviteModal/>
+      <ManageSessionModal/>
     </>
   );
 };

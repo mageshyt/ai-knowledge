@@ -4,6 +4,7 @@ import { create } from "zustand";
 export type ModalType =
   | "confirm-modal"
   | "invite-modal"
+  | "manage-archive-modal"
   ;
 
 interface ModalData {
