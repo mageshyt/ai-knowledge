@@ -48,7 +48,7 @@ export const SideBarRoutes = async () => {
         sharedSession && sharedSession.length > 0 &&
         <SessionWrapper>
           <p className="py-1 text-muted-foreground 
-                text-center  text-sm font-semibold">
+                text-center  text-xs font-semibold">
             Shared Sessions
           </p>
 
@@ -85,7 +85,7 @@ export const SideBarRoutes = async () => {
 
 const Wrapper = tw.div`flex flex-col gap-4  relative h-full`
 
-const SessionWrapper = tw.div`p-4`
+const SessionWrapper = tw.div`px-4`
 
 const NoSession = tw.p`
 text-center absolute cursor-pointer

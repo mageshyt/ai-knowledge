@@ -176,6 +176,15 @@ export const SidebarItem = ({ id, name, inviteCode, isShared = false }: SidebarI
             className='w-full h-full rounded-md '
           >
             {editName}
+            <span>
+              {
+
+                isShared &&
+                <span className='ml-2 text-xs text-muted-foreground'>
+                  (shared)
+                </span>
+              }
+            </span>
 
           </Link>
       }
