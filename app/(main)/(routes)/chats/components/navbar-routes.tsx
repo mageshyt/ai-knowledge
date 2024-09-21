@@ -1,11 +1,11 @@
 import { SocketIndicatorBadge } from '@/components/global/socket-indicator-badge'
-import { SettingsSidebar } from './settings-sidebar'
+import { ManageSession } from './manage-session'
 
 export const NavbarRoutes = () => {
   return (
     <div className='flex items-center gap-2'>
       <SocketIndicatorBadge />
-      <SettingsSidebar/>
+      <ManageSession />
     </div>
   )
 }

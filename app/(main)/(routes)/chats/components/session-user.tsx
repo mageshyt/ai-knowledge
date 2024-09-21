@@ -18,59 +18,73 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { Access } from "@prisma/client";
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import Show from "@/components/global/show";
 import { changeSessionRole } from "@/actions/chat-session/change-session-role";
 import ActionTooltip from "@/components/global/action-tooltip";
-import { auth } from "@clerk/nextjs/server";
+import { useRouter } from "next/navigation";
+import { removeSessionUser } from "@/actions/chat-session/remove-session-user";
 
 type SessionUserProps = {
   sessionUser: SafesessionUser;
+  refetch: () => void;
 };
 
-const roleIconMap = {
+const roleIconMap: Record<Access, JSX.Element> = {
   READ: <Eye className="w-4 h-4 ml-2" />,
   READ_WRITE: <ShieldCheck className="w-4 h-4 ml-2 text-indigo-400" />,
   ADMIN: <ShieldAlert className="w-4 h-4 ml-2 text-rose-400" />,
 };
 
-const roleToText = {
+const roleToText: Record<Access, string> = {
   READ: "View Only",
   READ_WRITE: "Full Access",
   ADMIN: "Admin",
 };
 
-export const SessionUserCard = ({ sessionUser }: SessionUserProps) => {
+export const SessionUserCard = ({ sessionUser, refetch }: SessionUserProps) => {
   // ----------------------State----------------------
   const { userId } = useAuth();
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
 
 
   // ----------------------Handlers----------------------
-  const handleRoleChange =async (userId: string, role: Access) => {
+    const handleRoleChange = async (userId: string, role: Access) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response=await changeSessionRole({ userId, role, sessionId: sessionUser.sessionId });
-
-      if ("error" in response) {
-        throw new Error(response.error);
-      }
+      const response = await changeSessionRole({ userId, role, sessionId: sessionUser.sessionId });
+      if ("error" in response) throw new Error(response.error);
 
       toast.success("User role updated successfully");
-    }
-    catch (error) {
+      refetch();
+      router.refresh();
+    } catch (error) {
       console.error("Error updating user role", error);
       toast.error("Error updating user role");
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
-
-
   };
 
-  const handleRemoveUser = (userId: string) => {
-    toast.info("Not implemented yet");
+  const handleRemoveUser = async (userId: string) => {
+    setLoading(true);
+    try {
+      const response = await removeSessionUser({
+        userId,
+        sessionId: sessionUser.sessionId,
+      });
+      if ("error" in response) throw new Error(response.error);
+
+      toast.success("User removed successfully");
+      refetch();
+      router.refresh();
+    } catch (error) {
+      console.error("Error removing user", error);
+      toast.error("Error removing user");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -93,7 +107,7 @@ export const SessionUserCard = ({ sessionUser }: SessionUserProps) => {
               label={roleToText[sessionUser.access]}
             >
 
-            {roleIconMap[sessionUser.access]}
+              {roleIconMap[sessionUser.access]}
             </ActionTooltip>
           </UserRole>
           <UserEmail>{sessionUser.user.email}</UserEmail>
@@ -105,7 +119,7 @@ export const SessionUserCard = ({ sessionUser }: SessionUserProps) => {
         <Show.When isTrue={loading}>
           <Loader2 className="size-6 animate-spin" />
         </Show.When>
-        <Show.When isTrue={sessionUser.userId !== userId}>
+        <Show.When isTrue={ sessionUser.userId !== userId}>
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Ellipsis className="size-4" />

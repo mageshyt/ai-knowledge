@@ -9,7 +9,7 @@ type RemoveSessionUserProps = {
   sessionId: string;
 }
 
-export const changeSessionRole = async ({ userId, sessionId }: RemoveSessionUserProps) => {
+export const removeSessionUser= async ({ userId, sessionId }: RemoveSessionUserProps) => {
   try {
     // chek if current user is admin
     const { userId: currentUserId } = auth();
