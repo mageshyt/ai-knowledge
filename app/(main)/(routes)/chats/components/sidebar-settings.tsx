@@ -1,11 +1,14 @@
+"use client";
 import tw from "tailwind-styled-components";
 import { Archive, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { ThemeToggle } from "@/components/global/theme-toogle";
 import { SignOutButton } from "@clerk/nextjs";
+import { useModal } from "@/hooks/use-modal";
 
 export const SidebarSettings = () => {
+  const { openModal } = useModal()
   return (
     <div className="flex flex-col gap-2 px-4 py-2">
       {/* theme button */}
@@ -16,16 +19,16 @@ export const SidebarSettings = () => {
         My account
       </SettingButton>
 
-      <SettingButton href="">
+      <ArchiveButton onClick={() => openModal("manage-archive-modal")} >
         <Archive className="size-4 mr-2 transition duration-700 " />
         Archives
-      </SettingButton>
+      </ArchiveButton>
 
       <SignOutButton >
-      <SettingButton href="">
-        <LogOut className="size-4 mr-2 transition duration-700 " />
-        Logout
-      </SettingButton>
+        <SettingButton href="">
+          <LogOut className="size-4 mr-2 transition duration-700 " />
+          Logout
+        </SettingButton>
       </SignOutButton>
     </div>
   );
@@ -34,3 +37,8 @@ export const SidebarSettings = () => {
 const SettingButton = tw(
   Link
 )`w-full flex items-start transition hover:dark:text-white group  hover:text-gray-400  p-2 hover:dark:bg-gray-100/20 rounded-md font-light text-sm text-muted-foreground`;
+
+const ArchiveButton = tw.button`w-full flex items-start transition 
+hover:dark:text-white group  hover:text-gray-400
+p-2 hover:dark:bg-gray-100/20 rounded-md
+font-light text-sm text-muted-foreground`;
