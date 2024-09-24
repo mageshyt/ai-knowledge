@@ -12,10 +12,9 @@ interface PageProps {
 }
 
 const ChatPage = async ({ params }: PageProps) => {
-
   const { userId } = auth();
   if (!userId) {
-    return redirect('/');
+    return redirect("/");
   }
 
   // check if the user has permission to access the chat
@@ -24,15 +23,14 @@ const ChatPage = async ({ params }: PageProps) => {
     where: {
       userId_sessionId: {
         userId: userId,
-        sessionId: params.chatId.toString()
-      }
-    }
+        sessionId: params.chatId.toString(),
+      },
+    },
   });
 
   if (!hasPermission) {
-    return redirect('/');
+    return redirect("/");
   }
-
 
   const contents = await db.content.findMany({
     where: {
@@ -46,46 +44,47 @@ const ChatPage = async ({ params }: PageProps) => {
     sessionId: params.chatId,
     amount: 10,
     startIndex: 0,
-  })
+  });
 
   const ragChatContent = contents.map((content) => {
     return {
       source: content.contentUrl,
       type: content.contentType === "WEB" ? "html" : "text",
-      config: { chunckOverlap: 50, chunckSize: 200 }
+      config: { chunckOverlap: 50, chunckSize: 200 },
     };
-  }
+  });
+
+  const isAlreadyIndexed = await redis.sismember(
+    "indexed-urls",
+    ragChatContent[0].source
   );
 
-  const isAlreadyIndexed = await redis.sismember("indexed-urls", ragChatContent[0].source);
-
-
-
   if (!isAlreadyIndexed) {
-    await ragChat.context.add(
-      {
-        source: ragChatContent[0].source,
-        type: "html",
-        config: { chunkOverlap: 50, chunkSize: 200 }
-      }
-    )
+    await ragChat.context.add({
+      source: ragChatContent[0].source,
+      type: "html",
+      config: { chunkOverlap: 50, chunkSize: 200 },
+    });
     await redis.sadd("indexed-urls", ragChatContent[0].source);
   }
 
-
-
-  return <ChatWrapper sessionId={params.chatId}
-    initialMessages={initialMessages}
-    hasPermission={hasPermission.access === "ADMIN" ||
-      hasPermission.access === "READ_WRITE"}
-    apiUrl="/api/messages"
-    socketUrl="/api/socket/messages"
-    socketQuery={{
-      sessionId: params.chatId
-    }}
-    paramKey="sessionId"
-    paramValue={params.chatId}
-  />;
+  return (
+    <ChatWrapper
+      sessionId={params.chatId}
+      initialMessages={initialMessages}
+      hasPermission={
+        hasPermission.access === "ADMIN" ||
+        hasPermission.access === "READ_WRITE"
+      }
+      apiUrl="/api/messages"
+      socketUrl="/api/socket/messages"
+      socketQuery={{
+        sessionId: params.chatId,
+      }}
+      paramKey="sessionId"
+      paramValue={params.chatId}
+    />
+  );
 };
 
 export default ChatPage;
