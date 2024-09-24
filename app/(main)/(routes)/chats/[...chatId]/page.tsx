@@ -2,7 +2,7 @@ import { db } from "@/lib";
 import { ragChat, redis } from "@/lib";
 import React from "react";
 import { ChatWrapper } from "./components/chat-wrapper";
-import { auth } from "@clerk/nextjs/server";
+import { auth, Session } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 interface PageProps {
@@ -13,23 +13,23 @@ interface PageProps {
 
 const ChatPage = async ({ params }: PageProps) => {
 
-  const {userId}=auth();
-  if(!userId){
+  const { userId } = auth();
+  if (!userId) {
     return redirect('/');
   }
 
   // check if the user has permission to access the chat
 
   const hasPermission = await db.sessionUser.findUnique({
-    where:{
-      userId_sessionId:{
-        userId:userId,
-        sessionId:params.chatId.toString()
+    where: {
+      userId_sessionId: {
+        userId: userId,
+        sessionId: params.chatId.toString()
       }
     }
   });
 
-  if(!hasPermission){
+  if (!hasPermission) {
     return redirect('/');
   }
 
@@ -74,10 +74,17 @@ const ChatPage = async ({ params }: PageProps) => {
 
 
 
-  return <ChatWrapper sessionId={params.chatId} 
+  return <ChatWrapper sessionId={params.chatId}
     initialMessages={initialMessages}
     hasPermission={hasPermission.access === "ADMIN" ||
       hasPermission.access === "READ_WRITE"}
+    apiUrl="/api/messages"
+    socketUrl="/api/socket/messages"
+    socketQuery={{
+      sessionId: params.chatId
+    }}
+    paramKey="sessionId"
+    paramValue={params.chatId}
   />;
 };
 
