@@ -8,11 +8,11 @@ const loading = () => {
       <Loader2 className="size-10 dark:text-zinc-500 text-zinc-400  animate-spin" />
 
       <div className="text-center">
-        <h2 className="text-xl dark:text-white text-black font-semibold">
+        <h2 className="text-sm dark:text-white text-black font-semibold">
           Preparing your chat
         </h2>
 
-        <p className="mt-2  text-sm dark:text-zinc-500 text-zinc-400">
+        <p className="mt-2  text-xs dark:text-zinc-500 text-zinc-400">
           this might take up to a second
         </p>
       </div>
