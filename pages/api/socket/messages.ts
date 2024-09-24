@@ -17,7 +17,6 @@ export default async function handler(
   try {
 
     const user = await currentProfilePage(req);
-    console.log('USER', user)
     if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -67,7 +66,7 @@ export default async function handler(
     // TODO: get Response from the AI and create a message
 
     const io = res.socket.server.io;
-    const sessionKey = `sessionId:${sessionId}:session`
+    const sessionKey = `session:${sessionId}:session`
 
 
     io.emit(sessionKey, userMessage)
