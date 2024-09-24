@@ -33,7 +33,7 @@ export default async function handler(
       return res.status(400).json({ error: 'Invalid request' });
     }
 
-    // check session exists 
+    // check session exists
     const session = await db.chatSession.findUnique({
       where: {
         id: sessionId[0] as string,
@@ -60,7 +60,6 @@ export default async function handler(
       }
     })
 
-    console.log("USER MESSAGE", userMessage)
 
 
     // TODO: get Response from the AI and create a message
@@ -68,9 +67,9 @@ export default async function handler(
     const io = res.socket.server.io;
     const sessionKey = `session:${sessionId}:session`
 
-
     io.emit(sessionKey, userMessage)
 
+    console.log("EMITTED MESSAGE", userMessage)
 
     return res.status(200).json(userMessage);
 

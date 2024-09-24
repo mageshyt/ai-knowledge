@@ -1,13 +1,13 @@
 "use client";
-import { Message, useChat } from "ai/react";
+import { Message } from "ai/react";
 import tw from "tailwind-styled-components";
 import { Messages } from "./messages";
-import ChatInput from "./chat-input";
+import ChatInput from "./chat-input"; 
 import Show from "@/components/global/show";
 import { useChatQuery } from "@/hooks/user-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment } from "react";
-import { MessageContent } from "./message-content";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
 interface ChatWrapperProps {
   sessionId: string;
@@ -32,6 +32,7 @@ export const ChatWrapper = ({
 }: ChatWrapperProps) => {
 
   const queryKey = `session:${sessionId}`
+  const addKey= `session:${sessionId}:session`;
 
   const {
     data,
@@ -44,6 +45,11 @@ export const ChatWrapper = ({
     apiUrl,
     paramKey,
     paramValue,
+  })
+
+  useChatSocket({
+    addKey,
+    queryKey,
   })
 
 
