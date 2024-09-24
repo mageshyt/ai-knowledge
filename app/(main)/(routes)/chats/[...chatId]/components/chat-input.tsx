@@ -1,69 +1,94 @@
 "use client";
-import React, { FC, useState, useCallback } from "react";
-import { Plus } from "lucide-react";
-import { type useChat } from "ai/react";
-import { Input } from "@/components/ui/input";
+
+import React, { FC } from "react";
+import { useRouter } from "next/navigation";
+
+import axios from "axios";
+import qs from "query-string";
 import tw from "tailwind-styled-components";
 
-type HandleInputChange = ReturnType<typeof useChat>["handleInputChange"];
-type HandleSubmit = ReturnType<typeof useChat>["handleSubmit"];
-type SetInput = ReturnType<typeof useChat>["setInput"];
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import { Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+
 
 interface ChatInputProps {
   apiUrl: string;
   query: Record<string, any>;
   name: string;
-  input: string;
-  handleInputChange: HandleInputChange;
-  handleSubmit: HandleSubmit;
-  setInput: SetInput;
+  sessionId: string;
 }
 
-const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, input, handleSubmit, handleInputChange, setInput }) => {
-  const [isLoading, setLoading] = useState(false);
 
-  const onSubmit = useCallback(
-    async (event: React.FormEvent) => {
-      event.preventDefault();
-      if (!input.trim()) return; // prevent empty submissions
-      try {
-        setLoading(true);
-        handleSubmit();
-        setInput(""); // Reset input field after submission
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
+const fontSchema = z.object({
+  content: z.string().min(1).max(2000),
+});
+
+const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof fontSchema>>({
+    defaultValues: {
+      content: "",
     },
-    [input, handleSubmit, setInput ]
-  );
+    resolver: zodResolver(fontSchema),
+  });
+
+  const isLoading = form.formState.isSubmitting;
+
+  const onSubmit = form.handleSubmit(async (data) => {
+    try {
+
+      const url = qs.stringifyUrl({
+        url: apiUrl,
+        query,
+      });
+
+      // TODO : use ragchat and get the Ai Response and create a message
+
+      await axios.post(url, data);
+
+      form.reset();
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
 
   return (
-    <form onSubmit={onSubmit}>
-      <div className="relative p-4">
-        {/* Plus button for media upload */}
-        <PlusButton type="button" aria-label="Add media">
-          <Plus className="text-white dark:text-[#31338]" />
-        </PlusButton>
+    <Form {...form}>
+      <form onSubmit={onSubmit}>
 
-        <MessageInput
-          disabled={isLoading} // Disable input while loading
-          onChange={handleInputChange}
-          value={input}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault(); // Prevent default form submission
-              onSubmit(e);
-            }
-          }}
-          placeholder={`Message ${name}`}
-          className={
-            ""
-          }
+        <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="relative p-4">
+                  {/* Plus button for media upload */}
+                  <PlusButton type="button" aria-label="Add media">
+                    <Plus className="text-white dark:text-[#31338]" />
+                  </PlusButton>
+
+                  <MessageInput
+                    {...field}
+                    disabled={isLoading}
+                    placeholder={`send Message #${name}`}
+                  />
+                </div>
+              </FormControl>
+            </FormItem>
+          )}
         />
-      </div>
-    </form>
+
+      </form>
+    </Form>
   );
 };
 
