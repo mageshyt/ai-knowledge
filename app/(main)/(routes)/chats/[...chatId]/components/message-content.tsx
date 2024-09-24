@@ -5,13 +5,14 @@ import React from 'react'
 interface MessageContentProps {
   content:string;
   isUserMessage:boolean;
+  name?:string;
 
 }
-export const MessageContent = ({content,isUserMessage}:MessageContentProps) => {
+export const MessageContent = ({content,isUserMessage,name}:MessageContentProps) => {
   return (
     <div
       className={cn({
-        "bg-zinc-800 rounded-md": isUserMessage,
+        "bg-zinc-800 rounded-md": !isUserMessage,
       }
       )}
     >
@@ -30,7 +31,7 @@ export const MessageContent = ({content,isUserMessage}:MessageContentProps) => {
         }
 
       >
-      
+
         {
           isUserMessage ?
           <User className='size-5'/> :
@@ -46,7 +47,7 @@ export const MessageContent = ({content,isUserMessage}:MessageContentProps) => {
           <span
             className='text-sm font-semibold text-gray-900 dark:text-white'
           >
-            {isUserMessage ? 'You' : 'Bot'}
+            {isUserMessage ? name || "YOU" : 'Bot'}
           </span>
         </div>
 

@@ -9,7 +9,6 @@ interface MessagesProps {
   messages: MessageWithUserProfile[];
 }
 export const Messages = ({ messages }: MessagesProps) => {
-  console.log(messages)
   return (
     <Wrapper >
       {
@@ -17,7 +16,8 @@ export const Messages = ({ messages }: MessagesProps) => {
           items={messages}
           render={(message: MessageWithUserProfile) => <MessageContent
             content={message.content}
-            isUserMessage={message.role === 'user'}
+            isUserMessage={message.role === "USER"}
+            name={message.user?.name || "YOU"}
           />}
         /> :
           <div className="flex-1 flex flex-col items-center justify-center gap-2">
