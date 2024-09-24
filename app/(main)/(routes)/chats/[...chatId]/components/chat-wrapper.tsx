@@ -8,6 +8,7 @@ import { useChatQuery } from "@/hooks/user-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment } from "react";
 import { useChatSocket } from "@/hooks/use-chat-socket";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ChatWrapperProps {
   sessionId: string;
@@ -93,7 +94,7 @@ export const ChatWrapper = ({
     <Wrapper>
 
       {/*--------------- Chat messages ------------- */}
-      <MessaegWrapper>
+      <MessaegWrapper hidden={true} >
         {/* <Messages messages={messages} /> */}
         {
           data?.pages?.map((page, index) => (
@@ -111,7 +112,7 @@ export const ChatWrapper = ({
           isTrue={hasPermission}
         >
           <ChatInput
-            apiUrl='/api/chat-stream'
+            apiUrl="/api/socket/messages"
             query={{ sessionId }}
             name='content'
             sessionId={sessionId}
@@ -126,6 +127,6 @@ export const ChatWrapper = ({
 
 const Wrapper = tw.div` flex-col flex h-full gap-2 p-4 overflow-hidden relative`;
 
-const MessaegWrapper = tw.div`
-h-full overflow-y-scroll
+const MessaegWrapper = tw(ScrollArea)`
+h-full  
 flex-1 flex flex-col justify-between`;
