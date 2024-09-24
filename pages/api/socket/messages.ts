@@ -20,15 +20,14 @@ export default async function handler(
     if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
+    console.log("USER", user)
 
-    //const { content } = req.body;
-    const { messages, sessionId
-    } = req.body;
-    const content = messages[messages.length - 1]?.content;
+    const { content } = req.body;
 
-    console.log(content, sessionId)
 
-    //const { sessionId } = req.query;
+    const { sessionId } = req.query;
+
+  
     if (!content || !sessionId) {
       return res.status(400).json({ error: 'Invalid request' });
     }
@@ -36,7 +35,7 @@ export default async function handler(
     // check session exists
     const session = await db.chatSession.findUnique({
       where: {
-        id: sessionId[0] as string,
+        id: sessionId as string,
         SessionUser: {
           some: {
             userId: user.id as string

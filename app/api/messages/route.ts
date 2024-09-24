@@ -4,7 +4,7 @@ import { Message } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 
-const MESSAGE_BATCH = 10
+const MESSAGE_BATCH = 20
 
 export async function GET(
   req: Request
@@ -43,7 +43,7 @@ export async function GET(
           user: true
         },
         orderBy: {
-          createdAt: 'asc'
+          createdAt: 'desc'
         }
       },
 
@@ -59,7 +59,7 @@ export async function GET(
           user: true
         },
         orderBy: {
-          createdAt: 'asc'
+          createdAt: 'desc'
         }
       },
       )
@@ -73,7 +73,7 @@ export async function GET(
     }
     // once we have all the messages we dont have any next cursor so it will be null
 
-
+    console.log(messages)
     return NextResponse.json({
       messages: messages,
       nextCursor
