@@ -79,12 +79,18 @@ model Content {
   @@index([chatId])
 }
 
-model Message {
-  id      String @id @default(cuid())
-  content String
+enum MessagRole {
+  USER
+  BOT
+}
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+model Message {
+  id      String     @id @default(cuid())
+  content String
+  role    MessagRole @default(USER)
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
 
   chat   ChatSession @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId String
