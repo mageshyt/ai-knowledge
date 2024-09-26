@@ -4,7 +4,7 @@ import { Message } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 
-const MESSAGE_BATCH = 20
+const MESSAGE_BATCH = 10
 
 export async function GET(
   req: Request
@@ -28,13 +28,13 @@ export async function GET(
 
     let messages: Message[] = []
 
-
+    console.log("CURSOR", cursor)
     if (cursor) {
       messages = await db.message.findMany({
+        take: MESSAGE_BATCH,
         where: {
           chatId: sessionId,
         },
-        take: MESSAGE_BATCH,
         skip: 1,
         cursor: {
           id: cursor,
@@ -43,7 +43,7 @@ export async function GET(
           user: true
         },
         orderBy: {
-          createdAt: 'desc'
+          createdAt: "desc",
         }
       },
 
@@ -59,7 +59,7 @@ export async function GET(
           user: true
         },
         orderBy: {
-          createdAt: 'desc'
+          createdAt: "desc", 
         }
       },
       )
@@ -73,7 +73,6 @@ export async function GET(
     }
     // once we have all the messages we dont have any next cursor so it will be null
 
-    console.log(messages)
     return NextResponse.json({
       messages: messages,
       nextCursor
