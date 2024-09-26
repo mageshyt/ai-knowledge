@@ -20,14 +20,13 @@ export default async function handler(
     if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-    console.log("USER", user)
 
-    const { content } = req.body;
+    const { content, role } = req.body;
 
 
     const { sessionId } = req.query;
 
-  
+
     if (!content || !sessionId) {
       return res.status(400).json({ error: 'Invalid request' });
     }
@@ -50,27 +49,36 @@ export default async function handler(
 
 
 
-    // create message - for user
-    const userMessage = await db.message.create({
-      data: {
-        chatId: session.id,
-        content: content,
-        userId: user.id
-      }
-    })
-
-
-
-    // TODO: get Response from the AI and create a message
-
     const io = res.socket.server.io;
     const sessionKey = `session:${sessionId}:session`
 
-    io.emit(sessionKey, userMessage)
+    // create message - for user
+    if (role === "user") {
+      const userMessage = await db.message.create({
+        data: {
+          chatId: session.id,
+          content: content,
+          userId: user.id
+        }
+      })
+      io.emit(sessionKey, userMessage);
+      return res.status(200).json(userMessage);
+    }
+    else if (role === "bot") {
+      const botMessage = await db.message.create({
+        data: {
+          chatId: session.id,
+          content: content,
+          role: "BOT"
+        }
+      })
+      io.emit(sessionKey, botMessage);
+      return res.status(200).json(botMessage);
 
-    console.log("EMITTED MESSAGE", userMessage)
+    }
 
-    return res.status(200).json(userMessage);
+
+
 
   }
   catch (error) {
