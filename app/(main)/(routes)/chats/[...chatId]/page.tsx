@@ -38,13 +38,7 @@ const ChatPage = async ({ params }: PageProps) => {
     },
   });
 
-  // TODO : Connect with Socket and our own db
 
-  const initialMessages = await ragChat.history.getMessages({
-    sessionId: params.chatId,
-    amount: 10,
-    startIndex: 0,
-  });
 
   const ragChatContent = contents.map((content) => {
     return {
@@ -71,18 +65,10 @@ const ChatPage = async ({ params }: PageProps) => {
   return (
     <ChatWrapper
       sessionId={params.chatId}
-      initialMessages={initialMessages}
       hasPermission={
         hasPermission.access === "ADMIN" ||
         hasPermission.access === "READ_WRITE"
       }
-      apiUrl="/api/messages"
-      socketUrl="/api/socket/messages"
-      socketQuery={{
-        sessionId: params.chatId,
-      }}
-      paramKey="sessionId"
-      paramValue={params.chatId}
     />
   );
 };

@@ -5,7 +5,7 @@ import React from 'react'
 interface MessageContentProps {
   content:string;
   isUserMessage:boolean;
-  name?:string;
+  name:string | undefined | null;
 
 }
 export const MessageContent = ({content,isUserMessage,name}:MessageContentProps) => {
@@ -47,7 +47,7 @@ export const MessageContent = ({content,isUserMessage,name}:MessageContentProps)
           <span
             className='text-sm font-semibold text-gray-900 dark:text-white'
           >
-            {isUserMessage ? name || "YOU" : 'Bot'}
+            {isUserMessage ? name  : 'Bot'}
           </span>
         </div>
 
