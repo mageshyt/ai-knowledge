@@ -14,7 +14,6 @@ export const useChatSocket = ({ addKey, queryKey }: ChatSocketProps) => {
   const { socket } = useSocket();
 
   useEffect(() => {
-    console.log("useChatSocket", socket);
     // check if socket is available
     if (!socket) return;
 
@@ -38,7 +37,7 @@ export const useChatSocket = ({ addKey, queryKey }: ChatSocketProps) => {
           const newData = [...oldData.pages];
 
           newData[0] = {
-            messages: [...newData[0].messages, message],
+            messages: [message,...newData[0].messages ],
           };
 
           return {
