@@ -3,18 +3,19 @@ import tw from "tailwind-styled-components";
 import { Archive, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { ThemeToggle } from "@/components/global/theme-toogle";
-import { SignOutButton } from "@clerk/nextjs";
+import * as themeToogle from "@/components/global/theme-toogle";
 import { useModal } from "@/hooks/use-modal";
+import { SignOutButton } from "@clerk/nextjs";
 
 export const SidebarSettings = () => {
-  const { openModal } = useModal()
+  const { openModal, } = useModal()
   return (
     <div className="flex flex-col gap-2 px-4 py-2">
       {/* theme button */}
-      <ThemeToggle />
+      <themeToogle.ThemeToggle />
 
       <SettingButton href="">
+
         <User className="size-4 mr-2 transition duration-700 " />
         My account
       </SettingButton>
@@ -24,13 +25,13 @@ export const SidebarSettings = () => {
         Archives
       </ArchiveButton>
 
-      <SignOutButton >
+      <SignOutButton>
         <SettingButton href="">
           <LogOut className="size-4 mr-2 transition duration-700 " />
           Logout
         </SettingButton>
       </SignOutButton>
-    </div>
+    </div >
   );
 };
 
