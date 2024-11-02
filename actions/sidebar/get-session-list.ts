@@ -1,5 +1,6 @@
 "use server";
 import { db } from "@/lib";
+import { sidebarRateLimit } from "@/lib/rate-limiter";
 import { auth } from "@clerk/nextjs/server";
 import { ChatSession } from "@prisma/client";
 
@@ -11,6 +12,14 @@ type UserSessions = {
 
 export const getSessionList = async (): Promise<UserSessions> => {
   try {
+    const isRatelimited=await sidebarRateLimit()
+
+    if (isRatelimited?.error){
+      return {
+        chats:[],
+        sharedSession:[]
+      }
+    }
     const { userId } = auth()
 
     if (!userId) {
