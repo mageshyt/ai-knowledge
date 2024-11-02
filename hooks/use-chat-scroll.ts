@@ -16,7 +16,7 @@ export const useChatScroll = ({
   loadMore,
   count,
 }: ChatScrollProps) => {
-  console.log("useChatScroll",count);
+  console.log("useChatScroll", count);
   const [hasInitialized, setHasInitialized] = useState(false);
 
   useEffect(() => {
@@ -59,7 +59,6 @@ export const useChatScroll = ({
 
     if (shouldAutoScroll()) {
       setTimeout(() => {
-        console.log("scrolling");
         bottomDiv!.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }

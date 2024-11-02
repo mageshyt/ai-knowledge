@@ -38,8 +38,6 @@ const ChatPage = async ({ params }: PageProps) => {
     },
   });
 
-
-
   const ragChatContent = contents.map((content) => {
     return {
       source: content.contentUrl,
