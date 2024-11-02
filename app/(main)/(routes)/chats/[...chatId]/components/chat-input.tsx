@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-
 interface ChatInputProps {
   apiUrl: string;
   query: Record<string, any>;
@@ -23,9 +22,13 @@ interface ChatInputProps {
   sessionId: string;
 }
 
-
 const fontSchema = z.object({
-  content: z.string().min(1).max(2000),
+  // remove tags
+  content: z
+    .string()
+    .min(1)
+    .max(2000)
+    .transform((val) => val.replace(/<[^>]*>/g, "")),
 });
 
 const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
@@ -42,7 +45,6 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
-
       const url = qs.stringifyUrl({
         url: apiUrl,
         query,
@@ -51,25 +53,23 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
       await axios.post(url, {
         content: data.content,
         sessionId: sessionId,
-        role: "user"
+        role: "user",
       });
 
       form.reset();
 
-      const { data: aiResponse } = await axios.post('/api/chat-stream', {
-       content: data.content,
-       sessionId: sessionId
+      const { data: aiResponse } = await axios.post("/api/chat-stream", {
+        content: data.content,
+        sessionId: sessionId,
       });
-
 
       // create message - for bot
 
       await axios.post(url, {
-       content: aiResponse,
-       sessionId: sessionId,
-       role: "bot"
+        content: aiResponse,
+        sessionId: sessionId,
+        role: "bot",
       });
-
 
       router.refresh();
     } catch (error) {
@@ -77,11 +77,9 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
     }
   });
 
-
   return (
     <Form {...form}>
       <form onSubmit={onSubmit}>
-
         <FormField
           control={form.control}
           name="content"
@@ -104,7 +102,6 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
             </FormItem>
           )}
         />
-
       </form>
     </Form>
   );
@@ -113,12 +110,12 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
 export default ChatInput;
 
 const PlusButton = tw.button`
-  absolute top-7 left-8 h-6 w-6 flex items-center justify-center bg-zinc-500 
-  dark:bg-white/10 hover:bg-zinc-600 dark:hover:bg-zinc-300/30 rounded-full 
+  absolute top-7 left-8 h-6 w-6 flex items-center justify-center bg-zinc-500
+  dark:bg-white/10 hover:bg-zinc-600 dark:hover:bg-zinc-300/30 rounded-full
   p-1 transition-all duration-200 ease-in-out
 `;
 
 const MessageInput = tw(Input)`
-px-14 py-6 bg-zinc-200/90 dark:bg-white/5  
+px-14 py-6 bg-zinc-200/90 dark:bg-white/5
 border-none focus-visible:ring-0 focus-visible:ring-offset-0
-`
+`;
