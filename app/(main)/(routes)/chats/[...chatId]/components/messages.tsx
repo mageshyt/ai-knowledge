@@ -2,7 +2,7 @@
 import React, { ElementRef, Fragment, useRef } from 'react'
 import tw from 'tailwind-styled-components';
 
-import { Loader2, MessageSquare, ServerCrash } from 'lucide-react';
+import * as lucideReact from 'lucide-react';
 
 import { MessageWithUserProfile } from '@/typings/typing';
 import { MessageContent } from './message-content';
@@ -16,7 +16,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 interface MessagesProps {
   sessionId: string;
   apiUrl: string;
- paramKey: "sessionId";
+  paramKey: "sessionId";
   paramValue: string;
 }
 
@@ -69,7 +69,7 @@ export const Messages = ({
         className="flex flex-col flex-1 justify-center items-center h-full"
       >
 
-        <Loader2 className="size-10 dark:text-zinc-500 text-zinc-400  animate-spin" />
+        <lucideReact.Loader2 className="size-10 dark:text-zinc-500 text-zinc-400  animate-spin" />
 
         <div className="text-center">
           <h2 className="text-sm dark:text-white text-black font-semibold">
@@ -89,7 +89,8 @@ export const Messages = ({
       <div
         className="flex flex-col flex-1 justify-center items-center h-full"
       >
-        <ServerCrash className="h-7 w-7 text-zinc-500 dark:text-zinc-400 animate-plus" />
+
+        <lucideReact.ServerCrash className="h-7 w-7 text-zinc-500 dark:text-zinc-400 animate-plus" />
         <p
           className="text-xs text-zinc-500 dark:text-zinc-500"
         >
@@ -105,7 +106,7 @@ export const Messages = ({
       className='flex-1 flex flex-col h-full'
     >
 
-      {/*  TOOD: Welcome Chat message and fetch older message */}
+      {/*  TODO:  Welcome Chat message and fetch older message */}
 
       <Wrapper >
 

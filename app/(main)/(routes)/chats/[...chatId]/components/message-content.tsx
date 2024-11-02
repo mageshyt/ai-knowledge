@@ -1,6 +1,10 @@
 import { cn } from '@/lib/utils';
 import { Bot, User } from 'lucide-react';
-import React from 'react'
+import tw from 'tailwind-styled-components';
+
+import { Preview } from '@/components/global/preview';
+import Show from '@/components/global/show';
+import { markdownToHtml } from '@/lib/format';
 
 interface MessageContentProps {
   content:string;
@@ -10,18 +14,18 @@ interface MessageContentProps {
 }
 export const MessageContent = ({content,isUserMessage,name}:MessageContentProps) => {
   return (
-    <div
+    <Wrapper
       className={cn({
-        "bg-zinc-800 rounded-md": !isUserMessage,
+        "dark:bg-zinc-800 bg-zinc-50 rounded-md": !isUserMessage,
       }
       )}
     >
-      <div className='p-6'>
+      <Container className='p-6'>
 
     <div className='max-w-3xl mx-auto flex items-start gap-2.5'>
 
       {/* Icon */}
-      <div
+      <IconIndicator
         className={cn(
           "size-10 shrink-0 aspect-square rounded-full border border-zinc-800 bg-zinc-900             flex justify-center items-center",
           {
@@ -37,7 +41,7 @@ export const MessageContent = ({content,isUserMessage,name}:MessageContentProps)
           <User className='size-5'/> :
             <Bot className='size-5 text-white'/>
         }
-      </div>
+      </IconIndicator>
 
       {/* Badge */}
       <div
@@ -50,19 +54,31 @@ export const MessageContent = ({content,isUserMessage,name}:MessageContentProps)
             {isUserMessage ? name  : 'Bot'}
           </span>
         </div>
+        <Show>
 
-        <p
+              <Show.When isTrue={isUserMessage} >
+        <UserMessaegPreview
           className='text-sm font-normal py-2.5 text-gray-900 dark:text-white'
         >
           {content}
-        </p>
+        </UserMessaegPreview>
+
+              </Show.When>
+              <Show.Else>
+                <Preview value={markdownToHtml(content)} />
+              </Show.Else>
+            </Show>
 
       </div>
 
     </div>
-    </div>
+    </Container>
 
-    </div>
+    </Wrapper>
   )
 }
 
+const Wrapper = tw.div``;
+const IconIndicator = tw.div``;
+const Container = tw.div``;
+const UserMessaegPreview = tw.div``;

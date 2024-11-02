@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 
 import { Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Play } from "next/font/google";
 
 
 interface ChatInputProps {
@@ -55,23 +54,23 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
         role: "user"
       });
 
-      // TODO : use ragchat and get the Ai Response and create a message
-      //const { data: aiResponse } = await axios.post('/api/chat-stream', {
-      //  content: data.content,
-      //  sessionId: sessionId
-      //});
-      //
+      form.reset();
+
+      const { data: aiResponse } = await axios.post('/api/chat-stream', {
+       content: data.content,
+       sessionId: sessionId
+      });
+
 
       // create message - for bot
 
-      //await axios.post(url, {
-      //  content: aiResponse,
-      //  sessionId: sessionId,
-      //  role: "bot"
-      //});
-      //
+      await axios.post(url, {
+       content: aiResponse,
+       sessionId: sessionId,
+       role: "bot"
+      });
 
-      form.reset();
+
       router.refresh();
     } catch (error) {
       console.log(error);
