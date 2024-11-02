@@ -37,7 +37,13 @@ export const SidebarSettings = () => {
 
 const SettingButton = tw(
   Link
-)`w-full flex items-start transition hover:dark:text-white group  hover:text-gray-400  p-2 hover:dark:bg-gray-100/20 rounded-md font-light text-sm text-muted-foreground`;
+)`
+
+font-light text-sm text-muted-foreground
+
+w-full flex items-start transition  p-2 rounded-md 
+hover:dark:text-white group  hover:text-gray-400  hover:dark:bg-gray-100/20 
+`;
 
 const ArchiveButton = tw.button`w-full flex items-start transition 
 hover:dark:text-white group  hover:text-gray-400
