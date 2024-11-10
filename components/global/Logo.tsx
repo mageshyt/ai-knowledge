@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import tw from 'tailwind-styled-components';
-import { cn } from '@/lib'
+import { cn } from '@/lib/utils';
 
 interface LogoProps {
   type :"minimal" | "full"
