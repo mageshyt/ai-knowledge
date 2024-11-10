@@ -8,6 +8,7 @@ import { ChatSession } from "@prisma/client";
 type UserSessions = {
   chats: ChatSession[],
   sharedSession: ChatSession[]
+  error?: "RATE_LIMITED" | "UNAUTHORIZED" | "INTERNAL_SERVER_ERROR"
 }
 
 export const getSessionList = async (): Promise<UserSessions> => {
@@ -16,14 +17,16 @@ export const getSessionList = async (): Promise<UserSessions> => {
 
     if (isRatelimited?.error){
       return {
-        chats:[],
-        sharedSession:[]
+        error: "RATE_LIMITED",
+        chats: [],
+        sharedSession: []
       }
     }
     const { userId } = auth()
 
     if (!userId) {
       return {
+        error: "UNAUTHORIZED",
         chats: [],
         sharedSession: []
       }
@@ -64,7 +67,8 @@ export const getSessionList = async (): Promise<UserSessions> => {
     console.error(error)
     return {
       chats: [],
-      sharedSession: []
+      sharedSession: [],
+      error: "INTERNAL_SERVER_ERROR"
     }
   }
 }

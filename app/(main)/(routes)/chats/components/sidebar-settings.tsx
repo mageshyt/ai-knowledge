@@ -6,19 +6,32 @@ import React from "react";
 import * as themeToogle from "@/components/global/theme-toogle";
 import { useModal } from "@/hooks/use-modal";
 import { SignOutButton } from "@clerk/nextjs";
+import { User as UserType } from "@prisma/client";
+import Show from "@/components/global/show";
 
-export const SidebarSettings = () => {
-  const { openModal, } = useModal()
+interface SidebarSettingsProps {
+  user: UserType ;
+}
+export const SidebarSettings = ({
+  user
+}: SidebarSettingsProps) => {
+  const { openModal } = useModal();
   return (
     <div className="flex flex-col gap-2 px-4 py-2">
       {/* theme button */}
       <themeToogle.ThemeToggle />
+      {/* ADMIN setting */}
+      <Show>
+        <Show.When isTrue={user?.roles.includes('SUPERADMIN') }>
 
-      <SettingButton href="">
 
-        <User className="size-4 mr-2 transition duration-700 " />
-        My account
-      </SettingButton>
+          <SettingButton href="">
+
+            <User className="size-4 mr-2 transition duration-700 " />
+            My account (Admin)
+          </SettingButton>
+        </Show.When>
+      </Show>
 
       <ArchiveButton onClick={() => openModal("manage-archive-modal")} >
         <Archive className="size-4 mr-2 transition duration-700 " />

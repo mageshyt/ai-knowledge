@@ -2,7 +2,7 @@ import { db } from "@/lib";
 import { ragChat, redis } from "@/lib";
 import React from "react";
 import { ChatWrapper } from "./components/chat-wrapper";
-import { auth, Session } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 interface PageProps {

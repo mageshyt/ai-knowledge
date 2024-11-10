@@ -18,7 +18,17 @@ export const SideBarRoutes = async () => {
 
   const data = await getSessionList();
 
-  const { chats, sharedSession } = data;
+
+  const { chats, sharedSession, error } = data;
+
+  if (error == "RATE_LIMITED") {
+    return redirect('/blocked')
+  }
+
+  if (error == "UNAUTHORIZED") {
+    return redirect('/')
+  }
+
 
   return (
     <Wrapper>

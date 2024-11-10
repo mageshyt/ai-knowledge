@@ -6,8 +6,15 @@ import { Button } from "@/components/ui/button";
 import { SidebarSettings } from "./sidebar-settings";
 import { SideBarRoutes } from "./sidebar-routes";
 import Link from "next/link";
+import { currentProfile } from "@/lib/current-profile";
+import { redirect } from "next/navigation";
 
-const Sidebar = () => {
+const Sidebar = async() => {
+  const user=await currentProfile();
+  if(!user){
+    return redirect("/");
+  }
+
   return (
     <Wrapper>
       <div className="w-full p-4">
@@ -29,7 +36,9 @@ const Sidebar = () => {
 
       {/* setting */}
       <SettingWrapper>
-        <SidebarSettings />
+        <SidebarSettings
+          user={user}
+         />
       </SettingWrapper>
     </Wrapper>
   );
