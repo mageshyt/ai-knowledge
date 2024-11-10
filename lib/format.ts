@@ -21,3 +21,7 @@ export function dateFormat(
 ) {
   return format(new Date(date), formatString);
 }
+
+export function truncate(str: string, n: number) {
+  return str.length > n ? str.substr(0, n - 1) + "..." : str;
+}
