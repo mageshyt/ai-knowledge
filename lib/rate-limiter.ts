@@ -1,27 +1,50 @@
-
 import { Ratelimit } from "@upstash/ratelimit";
 import { redis } from "./redis";
 import { getIp } from "./get-ip";
-import { log } from "console";
 
 
 const rateLimit = new Ratelimit({
   redis: redis,
-  limiter: Ratelimit.fixedWindow(10, "5 s")
+  limiter: Ratelimit.fixedWindow(100, "60 s")
 })
 
 
-const sidebarRateLimit = async ()=>{
+
+
+const chatsRateLimit = async (chatId: string) => {
   try {
-    const ip=await getIp();
-    const key=`sidebar-${ip}`;
-    console.log("KEY",key)
+    const ip = await getIp();
+    const key = `chats-${ip}-${chatId}`;
 
-    const {success,pending,limit,remaining}=await rateLimit.limit(key);
+    const { success, remaining } = await rateLimit.limit(key);
 
-    if(remaining<=0  || !success){
+    if (remaining <= 0 || !success) {
       return {
-        error:"Rate Limit"
+        error: "Rate Limit"
+      }
+    }
+
+    return null;
+
+  }
+  catch (error) {
+    return {
+      error: "Something went wrong"
+    }
+  }
+}
+
+
+const sidebarRateLimit = async () => {
+  try {
+    const ip = await getIp();
+    const key = `sidebar-${ip}`;
+
+    const { success, remaining } = await rateLimit.limit(key);
+
+    if (remaining <= 0 || !success) {
+      return {
+        error: "Rate Limit"
       }
     }
 
@@ -30,9 +53,9 @@ const sidebarRateLimit = async ()=>{
 
   } catch (error) {
     return {
-      error :"Something went wrong"
+      error: "Something went wrong"
     }
   }
 }
 
-export { rateLimit,sidebarRateLimit };
+export { rateLimit, sidebarRateLimit, chatsRateLimit };

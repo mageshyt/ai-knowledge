@@ -1,28 +1,40 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { rateLimit } from "./lib/rate-limiter";
+import { chatsRateLimit, rateLimit } from "./lib/rate-limiter";
 import { PROTECTED_ROUTES } from "./routes";
 
 const isProtectedRoute = createRouteMatcher(PROTECTED_ROUTES);
 
-export default clerkMiddleware(async(auth, req) => {
+export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) auth().protect();
-  const ip=req.ip ?? '12.0.0.1';
 
-  const {
-    success,
-    pending,
-    limit,
-    remaining,
-  }=await rateLimit.limit(ip);
+  // TODO: Add rate limiting for specific routes
 
-  if(!success || remaining<=0){
-    return NextResponse.redirect(new URL('/blocked',req.url).toString());
+  const ip = req.ip ?? '12.0.0.1';
+
+  // const {
+  //   success,
+  //   pending,
+  //   limit,
+  //   remaining,
+  // } = await rateLimit.limit(ip);
+  //
+
+  // ONLY CHAT ROUTE
+  if (req.url.includes('/chat')) {
+    const chatId = req.url.split('/').pop() ?? 'default';
+
+    console.log("RATE LIMIT", chatId);
+    const isCahtRateLimit = await chatsRateLimit(chatId)
+    if (isCahtRateLimit?.error) {
+
+      return NextResponse.redirect(new URL("/blocked", req.url).toString());
+    }
   }
 
-
-
   return NextResponse.next();
+
+
 });
 
 
