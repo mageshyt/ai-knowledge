@@ -22,10 +22,10 @@ export const SidebarSettings = ({
       <themeToogle.ThemeToggle />
       {/* ADMIN setting */}
       <Show>
-        <Show.When isTrue={user?.roles.includes('SUPERADMIN') }>
+        <Show.When isTrue={user?.roles.includes('SUPERADMIN')  || user.roles.includes("ADMIN")}>
 
 
-          <SettingButton href="">
+          <SettingButton href="/dashboard">
 
             <User className="size-4 mr-2 transition duration-700 " />
             My account (Admin)

@@ -12,7 +12,7 @@ export const DashboardCardWrapper: FC<DashboardCardWrapperProps> = ({
   return (
     <Wrapper>
       <HeadingWrapper>
-        <div className="h-6 rounded-tr-md     rounded-br-md   bg-emerald-300  w-1"></div>
+        <div className="h-6 rounded-tr-md     rounded-br-md   bg-indigo-300  w-1"></div>
 
         <Title>{title}</Title>
       </HeadingWrapper>
@@ -26,7 +26,7 @@ export const DashboardCardWrapper: FC<DashboardCardWrapperProps> = ({
 
 const Wrapper = tw.div`rounded-md bg-white dark:bg-neutral-900 border`;
 
-const Title = tw.span`text-primary ml-4 text-lg font-semibold`;
+const Title = tw.span`text-primary ml-4 text-xl font-semibold`;
 
 const HeadingWrapper = tw.div`pt-4  flex`;
 
