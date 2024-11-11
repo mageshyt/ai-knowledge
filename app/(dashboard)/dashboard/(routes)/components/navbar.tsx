@@ -2,8 +2,8 @@
 
 import { useMediaQuery } from "@uidotdev/usehooks";
 
-import {UserProfile} from './user-profile'
 import { Logo } from '@/components/global/Logo'
+import { UserProfile } from "@/components/global/user-profile";
 
 const Navbar = () => {
 
