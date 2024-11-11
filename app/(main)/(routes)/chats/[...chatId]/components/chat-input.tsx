@@ -71,7 +71,7 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
         role: "bot",
       });
 
-      router.refresh();
+      // router.refresh();
     } catch (error) {
       console.log(error);
     }

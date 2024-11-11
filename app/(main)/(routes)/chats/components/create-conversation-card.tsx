@@ -57,20 +57,20 @@ export const CreateConversationCard = () => {
     }
     try {
 
-      const response = await createSession(data);
-      if (response) {
-        toast.success('Conversation created successfully');
-        router.refresh()
-
-        setTimeout(() => {
-          router.push(`/chats/${response.id}`);
-        }, 1000);
-
-        form.reset();
+      const {chat,error}= await createSession(data);
+      if (error || !chat) {
+        toast.error(error);
+        return;
       }
-      else {
-        toast.error('Error while creating conversation');
-      }
+
+      toast.success('Conversation created successfully');
+      router.refresh()
+
+      setTimeout(() => {
+        router.push(`/chats/${chat.id}`);
+      }, 1000);
+
+      form.reset();
     } catch (e) {
       console.error('Error while creating conversation ', e);
       toast.error('Error while creating conversation');
