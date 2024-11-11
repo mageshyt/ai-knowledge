@@ -11,12 +11,25 @@ type ChatSessionProps = {
 export const createSession = async ({ contentUrl, name }: ChatSessionProps) => {
   try {
     const { userId } = auth()
-    console.log('[createSession] userId', userId)
 
     if (!userId) {
-      return null
+      return {
+        error : 'User not found',
+        chat:null
+      }
     }
+    const user = await db.user.findFirst({
+      where: {
+        id: userId
+      }
+    })
 
+    if (user?.isBlocked){
+      return {
+        error : 'You are blocked, please contact support',
+        chat:null
+      }
+    }
 
     const chats = await db.chatSession.create({
       data: {
@@ -39,10 +52,16 @@ export const createSession = async ({ contentUrl, name }: ChatSessionProps) => {
 
     console.log('[createSession] chats', chats)
 
-    return chats;
+    return {
+      error: null,
+      chat: chats
+    }
   }
   catch (error) {
     console.error('[createSession] error', error)
-    return null
+    return {
+      error: 'Error while creating conversation',
+      chat:null
+    }
   }
 }
