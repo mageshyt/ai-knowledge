@@ -19,6 +19,7 @@ import { useCurrentUser } from "@/hooks/user-current-user";
 import { hasPermission } from "@/lib/auth-rabc";
 import { toast } from "sonner";
 import { updateUserRole } from "@/actions/dashboard/change-user-role";
+import { blockUser } from "@/actions/dashboard/block-user";
 
 interface CellActionProps {
   data: User;
@@ -54,8 +55,24 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   }
 
-  const handleBlockUser = () => {
-    toast.info(`Blocking user`)
+  const handleBlockUser = async () => {
+    try {
+
+      const res = await blockUser(data.id)
+
+      if (res?.error) {
+
+        return toast.error(res.error)
+      }
+
+      toast.info(res.message)
+
+      router.refresh()
+
+    }
+    catch (err) {
+      toast.error("Something went wrong")
+    }
   }
 
 
