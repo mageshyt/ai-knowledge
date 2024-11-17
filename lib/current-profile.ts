@@ -1,3 +1,4 @@
+"use server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "./db";
 
@@ -29,7 +30,7 @@ export const currentProfile = async () => {
 
   // store the user in the cache
   await redis.set(userId, JSON.stringify(user), {
-    ex: 60 * 15
+    ex: 60 * 2
   });
   return user;
 };

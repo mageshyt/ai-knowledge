@@ -10,7 +10,7 @@ import { User as UserType } from "@prisma/client";
 import Show from "@/components/global/show";
 
 interface SidebarSettingsProps {
-  user: UserType ;
+  user: UserType;
 }
 export const SidebarSettings = ({
   user
@@ -22,7 +22,7 @@ export const SidebarSettings = ({
       <themeToogle.ThemeToggle />
       {/* ADMIN setting */}
       <Show>
-        <Show.When isTrue={user?.roles.includes('SUPERADMIN')  || user.roles.includes("ADMIN")}>
+        <Show.When isTrue={user?.roles.includes('SUPERADMIN') || user.roles.includes("ADMIN")}>
 
 
           <SettingButton href="/dashboard">
@@ -38,11 +38,12 @@ export const SidebarSettings = ({
         Archives
       </ArchiveButton>
 
-      <SignOutButton>
-        <SettingButton href="">
+      <SignOutButton redirectUrl="/">
+
+        <ArchiveButton>
           <LogOut className="size-4 mr-2 transition duration-700 " />
           Logout
-        </SettingButton>
+        </ArchiveButton>
       </SignOutButton>
     </div >
   );

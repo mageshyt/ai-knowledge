@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { User } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
 import BlockUserAction from "./block-user-action";
+import { CellAction } from "./action";
+import { Switch } from "@/components/ui/switch";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -61,7 +63,15 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "isBlocked",
     header: "Blocked",
-    cell: ({ row }) => <BlockUserAction user={row.original} />
+    cell: ({ row }) =>
+      <Switch
+        checked={row.original.isBlocked}
+      />
 
-  }
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data={row.original} />,
+  },
+
 ]

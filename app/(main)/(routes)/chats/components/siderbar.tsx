@@ -9,9 +9,9 @@ import Link from "next/link";
 import { currentProfile } from "@/lib/current-profile";
 import { redirect } from "next/navigation";
 
-const Sidebar = async() => {
-  const user=await currentProfile();
-  if(!user){
+const Sidebar = async () => {
+  const user = await currentProfile();
+  if (!user) {
     return redirect("/");
   }
 
@@ -29,16 +29,16 @@ const Sidebar = async() => {
         </Link>
       </div>
 
-        <Routes>
-          {/* <SidebarRoutes /> */}
-          <SideBarRoutes />
-        </Routes>
+      <Routes>
+        {/* <SidebarRoutes /> */}
+        <SideBarRoutes />
+      </Routes>
 
       {/* setting */}
       <SettingWrapper>
         <SidebarSettings
           user={user}
-         />
+        />
       </SettingWrapper>
     </Wrapper>
   );

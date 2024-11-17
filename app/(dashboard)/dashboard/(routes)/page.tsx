@@ -20,11 +20,9 @@ const Dashboardpage = async () => {
     return redirect('/')
   }
 
-  const users=await db.user.findMany({
-    where:{
-      NOT:{
-        id:user.id
-      }
+  const users = await db.user.findMany({
+    orderBy: {
+      createdAt: 'asc'
     }
   })
 

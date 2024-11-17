@@ -25,7 +25,7 @@ export const currentProfilePage = async (req: NextApiRequest) => {
   });
 
   await redis.set(userId, JSON.stringify(user), {
-    ex: 60 * 15
+    ex: 60 * 2
   });
 
   return user;
