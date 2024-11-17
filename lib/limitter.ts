@@ -11,7 +11,6 @@
  */
 
 import { getIp } from "@/lib/get-ip";
-import { RateLimitError } from "./errors";
 
 const PRUNE_INTERVAL = 60 * 1000; // 1 minute
 
@@ -47,7 +46,7 @@ export async function rateLimitByIp({
   const ip = getIp();
 
   if (!ip) {
-    throw new RateLimitError();
+    throw new Error("NO IP")
   }
 
   await rateLimitByKey({
@@ -80,6 +79,6 @@ export async function rateLimitByKey({
   tracker.count++;
 
   if (tracker.count > limit) {
-    throw new RateLimitError();
+    throw new Error("NO IP")
   }
 }
