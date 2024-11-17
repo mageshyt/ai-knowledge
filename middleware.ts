@@ -12,14 +12,6 @@ export default clerkMiddleware(async (auth, req) => {
 
   const ip = req.ip ?? '12.0.0.1';
 
-  // const {
-  //   success,
-  //   pending,
-  //   limit,
-  //   remaining,
-  // } = await rateLimit.limit(ip);
-  //
-
   // ONLY CHAT ROUTE
   if (req.url.includes('/chat')) {
     const chatId = req.url.split('/').pop() ?? 'default';
