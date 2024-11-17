@@ -22,7 +22,7 @@ interface ChatInputProps {
   sessionId: string;
 }
 
-const fontSchema = z.object({
+const formSchema = z.object({
   // remove tags
   content: z
     .string()
@@ -34,11 +34,11 @@ const fontSchema = z.object({
 const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, sessionId }) => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof fontSchema>>({
+  const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       content: "",
     },
-    resolver: zodResolver(fontSchema),
+    resolver: zodResolver(formSchema),
   });
 
   const isLoading = form.formState.isSubmitting;
