@@ -7,9 +7,9 @@ type Permission = (typeof ROLES)[Role][number]
 const ROLES = {
   "ADMIN": [
     "update:user",
-    
+    "block:user"
   ],
-  "SUPERADMIN": ["create:admin", "update:admin", "delete:admin","update:user","block:admin","update:superAdmin"],
+  "SUPERADMIN": ["create:admin", "update:admin", "delete:admin","update:user","block:admin","update:superAdmin","block:user"],
   "USER": [],
 } as const
 
