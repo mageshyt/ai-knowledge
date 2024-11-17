@@ -1,10 +1,9 @@
-"use client"
+"use client";
 
 import UserAvatar from "@/components/global/user-avatar";
 import { Badge } from "@/components/ui/badge";
-import { User } from "@prisma/client"
-import { ColumnDef } from "@tanstack/react-table"
-import BlockUserAction from "./block-user-action";
+import { User } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./action";
 import { Switch } from "@/components/ui/switch";
 
@@ -35,43 +34,39 @@ export const columns: ColumnDef<User>[] = [
         </div>
       );
     },
-
   },
   {
     accessorKey: "role",
     header: "Role",
     cell: ({ row }) => {
-
       return (
         <div>
-          {
-            row.original.roles.map((role) => (
-              <Badge key={role}
-                variant={
-                  role === "ADMIN" ? "default" :
-                    role === "SUPERADMIN" ? "default" :
-                      "secondary"
-                } className="mr-2">
-                {role}
-              </Badge>
-            ))
-          }
+          {row.original.roles.map((role) => (
+            <Badge
+              key={role}
+              variant={
+                role === "ADMIN"
+                  ? "default"
+                  : role === "SUPERADMIN"
+                    ? "default"
+                    : "secondary"
+              }
+              className="mr-2"
+            >
+              {role}
+            </Badge>
+          ))}
         </div>
-      )
-    }
+      );
+    },
   },
   {
     accessorKey: "isBlocked",
     header: "Blocked",
-    cell: ({ row }) =>
-      <Switch
-        checked={row.original.isBlocked}
-      />
-
+    cell: ({ row }) => <Switch checked={row.original.isBlocked} />,
   },
   {
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,
   },
-
-]
+];
