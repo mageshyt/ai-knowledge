@@ -98,46 +98,43 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <DropdownMenuSubContent>
 
               {/* ADMIN */}
-              {hasPermission(currentUser, "update:admin") && (
 
-                <DropdownMenuItem
-                  className="text-indigo-400"
-                  onClick={() => handleUpdateUser("ADMIN")}
-                >
-                  <ShieldCheck className="w-4 h-4 mr-2 " />
-                  ADMIN
+              <DropdownMenuItem
+                disabled={!hasPermission(currentUser, "update:user")}
+                className="text-indigo-400"
+                onClick={() => handleUpdateUser("ADMIN")}
+              >
+                <ShieldCheck className="w-4 h-4 mr-2 " />
+                ADMIN
 
-                  {
-                    data.roles.includes("ADMIN") && (
-                      <CircleCheck className="w-4 h-4 ml-auto" />
-                    )
-                  }
+                {
+                  data.roles.includes("ADMIN") && (
+                    <CircleCheck className="w-4 h-4 ml-auto" />
+                  )
+                }
 
-                </DropdownMenuItem>
+              </DropdownMenuItem>
 
 
-              )}
 
               {/* SUPERADMIN */}
 
-              {hasPermission(currentUser, "update:superAdmin") && (
-                <DropdownMenuItem
-                  className="text-green-400"
-                  onClick={() => handleUpdateUser("SUPERADMIN")}
-                >
-                  <ShieldAlert className="w-4 h-4 mr-2" />
-                  SUPERADMIN
+              <DropdownMenuItem
+                disabled={!hasPermission(currentUser, "update:superAdmin")}
+                className="text-green-400"
+                onClick={() => handleUpdateUser("SUPERADMIN")}
+              >
+                <ShieldAlert className="w-4 h-4 mr-2" />
+                SUPERADMIN
 
-                  {
-                    data.roles.includes("SUPERADMIN") && (
-                      <CircleCheck className="w-4 h-4 ml-auto" />
-                    )
-                  }
+                {
+                  data.roles.includes("SUPERADMIN") && (
+                    <CircleCheck className="w-4 h-4 ml-auto" />
+                  )
+                }
 
-                </DropdownMenuItem>
+              </DropdownMenuItem>
 
-
-              )}
 
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
@@ -150,13 +147,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           className="text-red-400"
           onClick={handleBlockUser}
         >
-          {hasPermission(currentUser, "block:admin") && (
-            <>
 
-              <ShieldBan className="w-4 h-4 mr-2" />
-              {data.isBlocked ? "Unblock" : "Block"}
-            </>
-          )}
+          <ShieldBan className="w-4 h-4 mr-2" />
+          {data.isBlocked ? "Unblock" : "Block"}
 
         </DropdownMenuItem>
 
